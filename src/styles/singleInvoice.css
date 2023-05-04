@@ -1,0 +1,25 @@
+.single-invoice-container{
+    margin-left: 15%;
+    margin-right: 15%;
+}
+.single-invoice-container-back{
+    color: #7E88C3;
+    margin-top: 5rem;
+}
+.single-invoice-container-tray{
+    display: flex;
+    justify-content: space-between;
+    border-radius: 10px;
+    padding: 1rem;
+    background-color: white;
+    margin-top: 1rem;
+}
+.single-invoice-container-tray-status{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #858BB2;
+}
+.single-invoice-container-tray-status p{
+    margin-right: 1rem;
+}

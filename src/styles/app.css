@@ -1,0 +1,47 @@
+.container{
+    display: flex;
+    background-color: #F2F2F2;
+}
+.invoice-page-container{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+.invoice-page-header{
+    display: flex;
+    justify-content: space-evenly;
+    padding-top: 2rem;
+    margin-bottom: 2rem;
+}
+.invoice-page-title h3{
+    color: #888EB0;
+    font-size: 0.7rem;
+}
+.invoice-page-info{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.invoice-page-info-new-button{
+    background-color: #7C5DFA;
+    border-radius: 20px;
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.invoice-page-info-new-button div{
+    background-color: white;
+    border-radius: 50%;
+    margin-right: 1rem;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.invoice-page-info-filter{
+    margin-right: 1rem;
+}

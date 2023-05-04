@@ -1,0 +1,64 @@
+.invoice-list-container{
+    display: flex;
+    justify-content: space-evenly;
+    background-color: white;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    margin-right: 15%;
+    margin-left: 15%;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.invoice-list-id{
+    font-weight: bold;
+}
+.invoice-list-gray{
+    color: #7E88C3;
+}
+.invoice-list-text{
+    text-align: left;
+}
+.invoice-list-button{
+display: flex;
+justify-content: center;
+align-items: center;
+border: none;
+padding: 0.5rem;
+border-radius: 5px;
+}
+.invoice-list-button div{
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    padding: 0.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.invoice-list-button-paid{
+    background-color: #ccf0e4;
+    color: #33D69F;
+}
+
+.invoice-list-button-paid div{
+    background-color:#33D69F;
+
+}
+
+.invoice-list-button-pending{
+    background-color: #f5e0e0;
+    color: #EC5757;
+}
+
+.invoice-list-button-pending div{
+    background-color:#EC5757;
+
+}
+.invoice-list-button-draft{
+    background-color: #eaeaea;
+    color: #7E88C3;
+}
+
+.invoice-list-button-draft div{
+    background-color:#7E88C3;
+
+}
