@@ -10,7 +10,10 @@ import { Link } from "react-router-dom";
 const App = () => {
   return (
     <div className="container">
-      <Navbar />
+      <div style={{ position: "fixed" }}>
+        <Navbar />
+      </div>
+
       <div className="invoice-page-container">
         <div className="invoice-page-header">
           <div className="invoice-page-title">

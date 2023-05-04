@@ -23,3 +23,77 @@
 .single-invoice-container-tray-status p{
     margin-right: 1rem;
 }
+.single-invoice-container-tray-buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.single-invoice-container-button{
+    padding: 1rem;
+    border-radius: 25px;
+    color: white;
+    border: none;
+}
+.edit{
+    background-color: #DFE3FA;
+    color: #7E88C3;
+}
+.delete{
+    background-color: #FF9797;
+    color: #FFFFFF;
+    margin-left: 1rem;
+}
+.mark-as-paid{
+    background-color: #9277FF;
+    color: white;
+    margin-left: 1rem;
+}
+.single-invoice-container-body{
+    border-radius: 10px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    margin-top: 1rem;
+    text-align: right;
+}
+.single-invoice-container-body-id-tray{
+    display: flex;
+    justify-content: space-between;
+}
+.single-invoice-container-body-id-tray h2{
+    padding-bottom:1rem;
+}
+
+.single-invoice-container-body-id-tray p,.single-invoice-container-body-lower-tray p{
+    color: #7E88C3;
+}
+.single-invoice-container-body-lower-tray{
+    display: flex;
+    justify-content: space-between;
+    padding-top: 2rem;
+    text-align: left;
+
+}
+.single-invoice-container-body-lower-tray h2{
+    padding-top:1rem;
+    padding-bottom: 1rem;
+}
+
+table{
+    background-color: #F9FAFE;
+    padding: 2rem;
+    margin-top: 2rem;
+    width: 100%;
+    text-align: left;
+}
+
+th{
+    padding-bottom: 2rem;
+    color: #7E88C3;
+}
+
+td{
+    padding-bottom: 2rem;
+}
+
