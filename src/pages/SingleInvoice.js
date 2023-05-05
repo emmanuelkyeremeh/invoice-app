@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import data from "../data/data.json";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "../styles/app.css";
 import Navbar from "../components/Navbar";
 import "../styles/singleInvoice.css";
 import iconLeft from "../assets/icon-arrow-left.svg";
 import "../styles/invoiceList.css";
+import EditInvoice from "../components/EditInvoice";
 
 const SingleInvoice = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
   const singleData = data.find((elem) => elem.id === id);
   const {
     status,
@@ -19,6 +22,7 @@ const SingleInvoice = () => {
     clientAddress,
     clientEmail,
     items,
+    total,
   } = singleData;
 
   return (
@@ -28,7 +32,10 @@ const SingleInvoice = () => {
       </div>
 
       <div className="invoice-page-container single-invoice-container">
-        <div className="single-invoice-container-back">
+        <div
+          className="single-invoice-container-back"
+          onClick={() => navigate("/")}
+        >
           <img src={iconLeft} alt="" /> Go back
         </div>
         <div className="single-invoice-container-tray">
@@ -42,7 +49,10 @@ const SingleInvoice = () => {
             </button>
           </div>
           <div className="single-invoice-container-tray-buttons">
-            <button className="single-invoice-container-button edit">
+            <button
+              className="single-invoice-container-button edit"
+              onClick={() => setOpen(true)}
+            >
               Edit
             </button>
             <button className="single-invoice-container-button delete">
@@ -108,9 +118,12 @@ const SingleInvoice = () => {
           </div>
           <footer>
             <p>Amount Due</p>
-            <h2></h2>
+            <h2>${total}</h2>
           </footer>
         </div>
+        {open && (
+          <EditInvoice open={open} setOpen={setOpen} singleData={singleData} />
+        )}
       </div>
     </div>
   );

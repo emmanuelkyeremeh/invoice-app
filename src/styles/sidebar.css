@@ -1,0 +1,90 @@
+.sidebar{
+    position: fixed;
+    overflow-x: hidden !important;
+    left: 5rem;
+    top: 0;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    
+}
+.sidebar-content{
+    flex: 0.3;
+    overflow-y: scroll;
+    background-color: white;
+    transition: 0.3s;
+    animation: slide 0.3s forwards;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    margin-right: -3rem;
+    z-index: 1000;
+    padding: 3rem;
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+}
+.sidebar-content::-webkit-scrollbar{
+    width: 0 !important
+}
+.sidebar-blur{
+    flex: 0.7;
+    opacity: 0.33;
+    background-color: black;
+    transition: 0.5s ;
+    animation: easeIn 0.5s;
+}
+
+@keyframes slide {
+    0% {
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes easeIn {
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity: 0.33;
+    }
+}
+
+.sidebar-form{
+    display: flex;
+    flex-direction: column;
+}
+
+.form-heading h2{
+    padding-bottom: 2rem;
+}
+.form-heading h4{
+    color: #7C5DFA;
+}
+
+.form-item{
+    display: flex;
+    flex-direction: column;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+.form-item label{
+    color: #7C5DFA;
+    padding-bottom: 0.5rem;
+}
+.form-item input{
+    width: 100%;
+    border: 1px solid #DFE3FA;
+    padding: 0.5rem;
+    border-radius: 5px;
+}
+ input:focus{
+    outline: 1px solid #DFE3FA;
+}
+
+.form-item-flex{
+    display: flex;
+    justify-content: space-between;
+}
+.form-item-flex div{
+    margin-right: 1rem;
+}
+
