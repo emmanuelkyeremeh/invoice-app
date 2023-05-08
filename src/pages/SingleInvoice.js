@@ -7,12 +7,14 @@ import "../styles/singleInvoice.css";
 import iconLeft from "../assets/icon-arrow-left.svg";
 import "../styles/invoiceList.css";
 import EditInvoice from "../components/EditInvoice";
+import DeleteInvoice from "../components/DeleteInvoice";
 
 const SingleInvoice = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const singleData = data.find((elem) => elem.id === id);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const {
     status,
     description,
@@ -55,7 +57,10 @@ const SingleInvoice = () => {
             >
               Edit
             </button>
-            <button className="single-invoice-container-button delete">
+            <button
+              className="single-invoice-container-button delete"
+              onClick={() => setOpenDeleteDialog(true)}
+            >
               Delete
             </button>
             <button className="single-invoice-container-button mark-as-paid">
@@ -123,6 +128,13 @@ const SingleInvoice = () => {
         </div>
         {open && (
           <EditInvoice open={open} setOpen={setOpen} singleData={singleData} />
+        )}
+        {openDeleteDialog && (
+          <DeleteInvoice
+            open={openDeleteDialog}
+            setOpen={setOpenDeleteDialog}
+            id={id}
+          />
         )}
       </div>
     </div>

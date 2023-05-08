@@ -2,26 +2,15 @@ import React from "react";
 import "../styles/sidebar.css";
 import deleteIcon from "../assets/icon-delete.svg";
 import plusIcon from "../assets/icon-plus.svg";
-const EditInvoice = ({ open, setOpen, singleData }) => {
-  const {
-    id,
-    status,
-    description,
-    senderAddress,
-    createdAt,
-    clientName,
-    clientAddress,
-    clientEmail,
-    items,
-    total,
-  } = singleData;
+const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
+  const items = [];
 
   return (
     <div className="sidebar">
       <div className="sidebar-content">
         <form className="sidebar-form">
           <div className="form-heading">
-            <h2>Edit #{id}</h2>
+            <h2>New Invoice</h2>
           </div>
           <div className="form-item">
             <div className="form-heading">
@@ -212,22 +201,26 @@ const EditInvoice = ({ open, setOpen, singleData }) => {
           </div>
           <div className="form-item">
             <div className="button-flex">
-              <div></div>
-              <div className="button-flex-item">
+              <div>
                 <button className="form-item-button button-light">
-                  Cancel
+                  Discard
+                </button>
+              </div>
+              <div className="button-flex-item">
+                <button className="form-item-button button-black">
+                  Save as Draft
                 </button>
                 <button className="form-item-button button-blue">
-                  Save Changes
+                  Save & Send
                 </button>
               </div>
             </div>
           </div>
         </form>
       </div>
-      <div className="sidebar-blur" onClick={() => setOpen(false)}></div>
+      <div className="sidebar-blur" onClick={() => setOpenSidebar(false)}></div>
     </div>
   );
 };
 
-export default EditInvoice;
+export default NewInvoice;

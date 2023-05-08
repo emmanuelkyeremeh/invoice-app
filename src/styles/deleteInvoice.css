@@ -1,0 +1,50 @@
+.delete-invoice-container{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(0, 0, 0,0.3);
+    left: 0;
+    width: 100%;
+    height: 130vh;
+    overflow: hidden;
+}
+
+.delete-invoice-child{
+    background-color: white;
+    border-radius: 10px;
+    position: fixed;
+    padding :3rem;
+    margin-top: -30vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.delete-invoice-child p{
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    color: #888EB0;
+}
+.delete-invoice-button-flex{
+    display: flex;
+    justify-content: space-between;
+}
+.delete-invoice-button-flex button:last-child{
+    margin-left: 1rem;
+}
+
+.delete-invoice-button{
+    padding: 0.7rem;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.button-light{
+    background-color: #F9FAFE;
+    color: #7E88C3;
+}
+.button-red{
+    background-color: #EC5757;
+    color: #FFFFFF;
+}

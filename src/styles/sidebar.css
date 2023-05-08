@@ -88,3 +88,91 @@
     margin-right: 1rem;
 }
 
+select,option{
+    padding: 0.5rem;
+    border: 1px solid #DFE3FA;
+    width: 100%;
+    border-radius:5px;
+}
+
+select:focus,option:focus{
+    outline: 1px solid #DFE3FA;
+}
+.form-item-flex-table{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.7rem;
+}
+.form-item-flex-table input{
+    font-size: 0.7rem;
+}
+
+.input-item-name {
+    flex: 0.5;
+}
+.input-item-name input{
+    width: 85%;
+}
+
+.input-quantity {
+    flex: 0.1;
+}
+
+.input-quantity input{
+    width: 40%;
+}
+
+.input-price{
+   flex: 0.2;
+}
+
+.input-price input{
+    width: 60%;
+}
+
+.input-total{
+    flex: 0.1;
+}
+.input-total input{
+    border: none;
+    color: #7C5DFA;
+    padding-left: 0;
+    font-weight: bolder;
+}
+.input-icon{
+    flex: 0.1;
+}
+.input-icon img{
+    width: 15px;
+    height: 15px;
+    padding: 10px;
+    cursor: pointer;
+}
+.form-item-button{
+    border: none;
+    padding: 0.7rem;
+    border-radius: 20px;
+    cursor: pointer;
+}
+.new-button{
+    color: #7E88C3;
+    background-color: #DFE3FA
+}
+.button-flex{
+    display: flex;
+    justify-content: space-between;
+    padding-top: 1rem;
+}
+.button-flex-item button:last-child{
+    margin-left: 1rem;
+}
+.button-black{
+    background-color: #0C0E16;
+    color: #888EB0;
+}
+.button-blue{
+    background-color: #9277FF;
+    color: #FFFFFF;
+}
+
