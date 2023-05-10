@@ -1,6 +1,6 @@
 .invoice-list-container{
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     background-color: white;
     padding: 1rem;
     margin-bottom: 1rem;
@@ -61,4 +61,45 @@ border-radius: 5px;
 .invoice-list-button-draft div{
     background-color:#7E88C3;
 
+}
+.display-none-responsive{
+    display: none;
+}
+.responsive-flex-div-left{
+    flex: 0.7;
+    display: flex;
+    justify-content: space-between;
+}
+.responsive-flex-div-right{
+    flex: 0.3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.invoice-list-icon{
+    padding-left: 1rem;
+}
+
+@media screen and (max-width:650px) {
+    .invoice-list-text{
+        display: none;
+    }
+    .responsive-flex-div-right{
+        flex-direction: column;
+    }
+    .responsive-flex-div-left div{
+        padding-bottom: 1rem;
+    }
+    .display-none-responsive{
+        display: contents;
+    }
+    .invoice-list-icon{
+        display: none;
+    }
+    .responsive-flex-div-left{
+    flex-direction: column;
+    }
+    .invoice-list-button{
+        margin-top: 2rem;
+    }
 }

@@ -51,6 +51,7 @@
 .sidebar-form{
     display: flex;
     flex-direction: column;
+    padding-top: 1rem;
 }
 
 .form-heading h2{
@@ -175,4 +176,30 @@ select:focus,option:focus{
     background-color: #9277FF;
     color: #FFFFFF;
 }
+.container-back-display-none{
+    display: none;
+}
 
+@media screen and (max-width:820px) {
+    .sidebar{
+        left: 0;
+    }
+    .sidebar-content{
+        flex: 0.7;
+    }
+    .sidebar-blur{
+        flex: 0.3;
+    }
+}
+
+@media screen and (max-width:768px){
+    .sidebar-content{
+        flex: 1;
+    }
+    .sidebar-blur{
+        flex: 0;
+    }
+    .container-back-display-none{
+        display:contents;
+    }
+}

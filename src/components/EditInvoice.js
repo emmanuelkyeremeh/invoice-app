@@ -2,7 +2,11 @@ import React from "react";
 import "../styles/sidebar.css";
 import deleteIcon from "../assets/icon-delete.svg";
 import plusIcon from "../assets/icon-plus.svg";
+import iconLeft from "../assets/icon-arrow-left.svg";
+import "../styles/singleInvoice.css";
+import { useNavigate } from "react-router";
 const EditInvoice = ({ open, setOpen, singleData }) => {
+  const navigate = useNavigate();
   const {
     id,
     status,
@@ -19,6 +23,12 @@ const EditInvoice = ({ open, setOpen, singleData }) => {
   return (
     <div className="sidebar">
       <div className="sidebar-content">
+        <div
+          className="single-invoice-container-back container-back-display-none"
+          onClick={() => navigate("/")}
+        >
+          <img src={iconLeft} alt="" /> Go back
+        </div>
         <form className="sidebar-form">
           <div className="form-heading">
             <h2>Edit #{id}</h2>

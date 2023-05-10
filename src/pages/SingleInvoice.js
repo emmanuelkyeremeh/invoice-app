@@ -42,7 +42,10 @@ const SingleInvoice = () => {
         </div>
         <div className="single-invoice-container-tray">
           <div className="single-invoice-container-tray-status">
-            <p>Status</p>
+            <div>
+              <p>Status</p>
+            </div>
+
             <button
               className={`invoice-list-button invoice-list-button-${status}`}
             >
@@ -50,7 +53,7 @@ const SingleInvoice = () => {
               {`${status.charAt(0).toUpperCase()}${status.substring(1)}`}
             </button>
           </div>
-          <div className="single-invoice-container-tray-buttons">
+          <div className="single-invoice-container-tray-buttons buttons-display-none">
             <button
               className="single-invoice-container-button edit"
               onClick={() => setOpen(true)}
@@ -103,16 +106,39 @@ const SingleInvoice = () => {
             <table>
               <thead>
                 <th>Item Name</th>
-                <th>QTY.</th>
-                <th>Price</th>
+                <th>
+                  {" "}
+                  <span className="single-invoice-display-none-responsive">
+                    QTY
+                  </span>{" "}
+                </th>
+                <th>
+                  <span className="single-invoice-display-none-responsive">
+                    Price
+                  </span>{" "}
+                </th>
                 <th>Total</th>
               </thead>
               <tbody>
                 {items.map((item) => (
                   <tr>
-                    <td>{item.name}</td>
-                    <td>{item.quantity}</td>
-                    <td>{item.price}</td>
+                    <td>
+                      {item.name}
+                      <span className="single-invoicedisplay-all-responsive">
+                        <br />
+                        {item.quantity}x{item.price}
+                      </span>
+                    </td>
+                    <td>
+                      <span className="single-invoice-display-none-responsive">
+                        {item.quantity}
+                      </span>
+                    </td>
+                    <td>
+                      <span className="single-invoice-display-none-responsive">
+                        {item.price}
+                      </span>
+                    </td>
                     <td>
                       <h3>${item.total}</h3>
                     </td>
@@ -125,6 +151,39 @@ const SingleInvoice = () => {
             <p>Amount Due</p>
             <h2>${total}</h2>
           </footer>
+        </div>
+        <div className="tray-responsive">
+          <div className="single-invoice-container-tray">
+            <div className="single-invoice-container-tray-status tray-status-responsive">
+              <div>
+                <p>Status</p>
+              </div>
+
+              <button
+                className={`invoice-list-button invoice-list-button-${status}`}
+              >
+                <div></div>{" "}
+                {`${status.charAt(0).toUpperCase()}${status.substring(1)}`}
+              </button>
+            </div>
+            <div className="single-invoice-container-tray-buttons tray-buttons-show">
+              <button
+                className="single-invoice-container-button edit"
+                onClick={() => setOpen(true)}
+              >
+                Edit
+              </button>
+              <button
+                className="single-invoice-container-button delete"
+                onClick={() => setOpenDeleteDialog(true)}
+              >
+                Delete
+              </button>
+              <button className="single-invoice-container-button mark-as-paid">
+                Mark as Paid
+              </button>
+            </div>
+          </div>
         </div>
         {open && (
           <EditInvoice open={open} setOpen={setOpen} singleData={singleData} />
