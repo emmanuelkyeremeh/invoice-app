@@ -37,6 +37,9 @@ nav{
     margin-top: 2rem;
     margin-bottom: 2rem;
 }
+.moon-icon{
+    cursor: pointer;
+}
 
 @media screen and (max-width: 820px) {
     nav{

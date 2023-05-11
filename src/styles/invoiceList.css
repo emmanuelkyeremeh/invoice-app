@@ -1,7 +1,6 @@
 .invoice-list-container{
     display: flex;
     justify-content: space-between;
-    background-color: white;
     padding: 1rem;
     margin-bottom: 1rem;
     margin-right: 15%;
@@ -12,9 +11,7 @@
 .invoice-list-id{
     font-weight: bold;
 }
-.invoice-list-gray{
-    color: #7E88C3;
-}
+
 .invoice-list-text{
     text-align: left;
 }

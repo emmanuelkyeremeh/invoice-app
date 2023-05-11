@@ -3,16 +3,26 @@ import Navbar from "../components/Navbar";
 import iconArrowDown from "../assets/icon-arrow-down.svg";
 import iconPlus from "../assets/icon-plus.svg";
 import "../styles/app.css";
-import data from "../data/data.json";
 import InvoiceList from "../components/InvoiceList";
 import { Link } from "react-router-dom";
 import NewInvoice from "../components/NewInvoice";
+import { useRecoilValue } from "recoil";
+import { darkMode, invoices } from "../state/state.js";
+import illustrationEmpty from "../assets/illustration-empty.svg";
 
 const App = () => {
   const [openSidebar, setOpenSidebar] = useState(false);
+  const isDark = useRecoilValue(darkMode);
+  const data = useRecoilValue(invoices);
 
   return (
-    <div className="container">
+    <div
+      className="container"
+      style={{
+        color: `${isDark ? "white" : "black"}`,
+        backgroundColor: `${isDark ? "#141625" : "#F2F2F2"}`,
+      }}
+    >
       <div style={{ position: "fixed" }}>
         <Navbar />
       </div>
@@ -21,7 +31,9 @@ const App = () => {
         <div className="invoice-page-header">
           <div className="invoice-page-title">
             <h1>Invoices</h1>
-            <h3>There are 7 total invoices</h3>
+            <h3 style={{ color: `${isDark ? "white" : "#888EB0"}` }}>
+              There are 7 total invoices
+            </h3>
           </div>
           <div className="invoice-page-info">
             <div className="invoice-page-info-filter">
@@ -40,7 +52,7 @@ const App = () => {
             </div>
           </div>
         </div>
-        {data &&
+        {data.length ? (
           data.map((item) => (
             <Link to={`/invoice/${item.id}`}>
               <InvoiceList
@@ -51,7 +63,20 @@ const App = () => {
                 status={item.status}
               />
             </Link>
-          ))}
+          ))
+        ) : (
+          <div className="invoice-list-empty">
+            <img className="invoice-list-img" src={illustrationEmpty} alt="" />
+            <h2 className="invoice-list-heading">There is nothing here</h2>
+            <p
+              style={{ color: `${isDark ? "white" : "#888EB0"}` }}
+              className="invoice-list-text"
+            >
+              Create an invoice by clicking the <span>New Invoice</span> button
+              and get started
+            </p>
+          </div>
+        )}
       </div>
       {openSidebar && (
         <NewInvoice openSidebar={openSidebar} setOpenSidebar={setOpenSidebar} />

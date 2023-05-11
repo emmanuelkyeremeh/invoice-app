@@ -1,6 +1,7 @@
 .container{
     display: flex;
-    background-color: #F2F2F2;
+    min-height: 100vh;
+    transition: 0.3s ease-in-out;
 }
 .invoice-page-container{
     display: flex;
@@ -14,7 +15,6 @@
     margin-bottom: 2rem;
 }
 .invoice-page-title h3{
-    color: #888EB0;
     font-size: 0.7rem;
 }
 .invoice-page-info{
@@ -45,6 +45,25 @@
 }
 .invoice-page-info-filter{
     margin-right: 1rem;
+}
+.invoice-list-empty{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.invoice-list-img{
+    width: 20rem;
+    height: 20rem;
+}
+.invoice-list-heading{
+    padding-top: 1rem;
+}
+.invoice-list-text{
+    padding-top: 1rem;
+}
+.invoice-list-text span{
+    font-weight: bold;
 }
 
 @media  screen and (max-width:820px) {
