@@ -12,7 +12,7 @@
     font-weight: bold;
 }
 
-.invoice-list-text{
+.invoice-list-text-responsive{
     text-align: left;
 }
 .invoice-list-button{
@@ -63,14 +63,15 @@ border-radius: 5px;
     display: none;
 }
 .responsive-flex-div-left{
-    flex: 0.7;
+    flex: 0.5;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 .responsive-flex-div-right{
-    flex: 0.3;
+    flex: 0.5;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
 }
 .invoice-list-icon{
@@ -78,7 +79,7 @@ border-radius: 5px;
 }
 
 @media screen and (max-width:650px) {
-    .invoice-list-text{
+    .invoice-list-text-responsive{
         display: none;
     }
     .responsive-flex-div-right{

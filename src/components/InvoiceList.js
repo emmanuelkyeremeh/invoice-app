@@ -16,15 +16,14 @@ const InvoiceList = ({ id, paymentDue, clientName, total, status }) => {
     >
       <div className="responsive-flex-div-left">
         <div className="invoice-list-id">#{id}</div>
-        <div
-          className="invoice-list-gray"
-          style={{ color: `${isDark ? "white" : "#7E88C3"}` }}
-        >
+        <div style={{ color: `${isDark ? "white" : "#7E88C3"}` }}>
           {paymentDue}
         </div>
-        <div className="display-none-responsive">${total}</div>
+        <div className="display-none-responsive">
+          <h2>${total}</h2>
+        </div>
         <div
-          className="invoice-list-gray invoice-list-text "
+          className="invoice-list-text-responsive"
           style={{ color: `${isDark ? "white" : "#7E88C3"}` }}
         >
           {clientName}
@@ -33,10 +32,13 @@ const InvoiceList = ({ id, paymentDue, clientName, total, status }) => {
 
       <div className="responsive-flex-div-right">
         <div
-          className="invoice-list-gray invoice-list-text display-none-responsive"
+          className="display-none-responsive"
           style={{ color: `${isDark ? "white" : "#7E88C3"}` }}
         >
           {clientName}
+        </div>
+        <div className="invoice-list-text-responsive">
+          <h2>${total}</h2>
         </div>
         <button className={`invoice-list-button invoice-list-button-${status}`}>
           <div></div>{" "}

@@ -1,27 +1,64 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/sidebar.css";
 import deleteIcon from "../assets/icon-delete.svg";
 import plusIcon from "../assets/icon-plus.svg";
 import iconLeft from "../assets/icon-arrow-left.svg";
 import "../styles/singleInvoice.css";
 import { useNavigate } from "react-router";
-import { useRecoilValue } from "recoil";
-import { darkMode } from "../state/state";
-const EditInvoice = ({ open, setOpen, singleData }) => {
+import { useRecoilState, useRecoilValue } from "recoil";
+import { darkMode, invoices } from "../state/state";
+
+const EditInvoice = ({ open, setOpen, singleData, index, id }) => {
   const isDark = useRecoilValue(darkMode);
   const navigate = useNavigate();
-  const {
-    id,
-    status,
-    description,
-    senderAddress,
-    createdAt,
-    clientName,
-    clientAddress,
-    clientEmail,
-    items,
-    total,
-  } = singleData;
+  const [items, setItems] = useState(singleData.items);
+  const [invoiceList, setinvoiceList] = useRecoilState(invoices);
+  const [senderAddress, setSenderAddress] = useState(singleData.senderAddress);
+  const [clientName, setClientName] = useState(singleData.clientName);
+  const [clientEmail, setClientEmail] = useState(singleData.clientEmail);
+  const [clientAddress, setClientAddress] = useState(singleData.clientAddress);
+  const [createdAt, setCreatedAt] = useState(singleData.createdAt);
+  const [paymentTerms, setPaymentTerms] = useState(singleData.paymentTerms);
+  const [description, setDescription] = useState(singleData.description);
+
+  const addItemHandler = (e) => {
+    e.preventDefault();
+    setItems([...items, { name: "", quantity: "", price: "", total: 0 }]);
+  };
+
+  const handleItemDelete = (index) => {
+    setItems(items.filter((item, indx) => indx !== index));
+  };
+
+  const saveAndSubmitHandler = (e) => {
+    e.preventDefault();
+    let total = 0;
+
+    for (let item of items) {
+      item.total = parseInt(item.quantity) * parseInt(item.price);
+      total += parseInt(item.total);
+    }
+
+    const newInvoice = {
+      id: id,
+      createdAt: createdAt,
+      paymentDue: createdAt,
+      description: description,
+      paymentTerms: paymentTerms,
+      clientName: clientName,
+      clientEmail: clientEmail,
+      status: singleData.status,
+      senderAddress: senderAddress,
+      clientAddress: clientAddress,
+      items: items,
+      total: total,
+    };
+
+    setinvoiceList((prev) => ({
+      ...prev,
+      [index]: newInvoice,
+    }));
+  };
 
   return (
     <div className="sidebar">
@@ -63,7 +100,11 @@ const EditInvoice = ({ open, setOpen, singleData }) => {
                   borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                 }}
                 type="text"
-                name=""
+                name={senderAddress.street}
+                placeholder={senderAddress.street}
+                onChange={(e) =>
+                  setSenderAddress({ ...senderAddress, street: e.target.value })
+                }
                 id=""
               />
             </div>
@@ -86,7 +127,11 @@ const EditInvoice = ({ open, setOpen, singleData }) => {
                     borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                   }}
                   type="text"
-                  name=""
+                  name={senderAddress.city}
+                  placeholder={senderAddress.city}
+                  onChange={(e) =>
+                    setSenderAddress({ ...senderAddress, city: e.target.value })
+                  }
                   id=""
                 />
               </div>
@@ -108,7 +153,14 @@ const EditInvoice = ({ open, setOpen, singleData }) => {
                     borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                   }}
                   type="text"
-                  name=""
+                  name={senderAddress.postCode}
+                  placeholder={senderAddress.postCode}
+                  onChange={(e) =>
+                    setSenderAddress({
+                      ...senderAddress,
+                      postCode: e.target.value,
+                    })
+                  }
                   id=""
                 />
               </div>
@@ -130,7 +182,14 @@ const EditInvoice = ({ open, setOpen, singleData }) => {
                     borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                   }}
                   type="text"
-                  name=""
+                  name={senderAddress.country}
+                  placeholder={senderAddress.country}
+                  onChange={(e) =>
+                    setSenderAddress({
+                      ...senderAddress,
+                      country: e.target.value,
+                    })
+                  }
                   id=""
                 />
               </div>
@@ -158,7 +217,9 @@ const EditInvoice = ({ open, setOpen, singleData }) => {
                   borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                 }}
                 type="text"
-                name=""
+                name={clientName}
+                placeholder={clientName}
+                onChange={(e) => setClientName(e.target.value)}
                 id=""
               />
             </div>
@@ -180,7 +241,9 @@ const EditInvoice = ({ open, setOpen, singleData }) => {
                   borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                 }}
                 type="email"
-                name=""
+                name={clientEmail}
+                placeholder={clientEmail}
+                onChange={(e) => setClientEmail(e.target.value)}
                 id=""
               />
             </div>
@@ -202,7 +265,11 @@ const EditInvoice = ({ open, setOpen, singleData }) => {
                   borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                 }}
                 type="text"
-                name=""
+                name={clientAddress.street}
+                placeholder={clientAddress.street}
+                onChange={(e) =>
+                  setClientAddress({ ...clientAddress, street: e.target.value })
+                }
                 id=""
               />
             </div>
@@ -225,7 +292,11 @@ const EditInvoice = ({ open, setOpen, singleData }) => {
                     borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                   }}
                   type="text"
-                  name=""
+                  name={clientAddress.city}
+                  placeholder={clientAddress.city}
+                  onChange={(e) =>
+                    setClientAddress({ ...clientAddress, city: e.target.value })
+                  }
                   id=""
                 />
               </div>
@@ -247,7 +318,14 @@ const EditInvoice = ({ open, setOpen, singleData }) => {
                     borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                   }}
                   type="text"
-                  name=""
+                  name={clientAddress.postCode}
+                  placeholder={clientAddress.postCode}
+                  onChange={(e) =>
+                    setClientAddress({
+                      ...clientAddress,
+                      postCode: e.target.value,
+                    })
+                  }
                   id=""
                 />
               </div>
@@ -269,7 +347,14 @@ const EditInvoice = ({ open, setOpen, singleData }) => {
                     borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                   }}
                   type="text"
-                  name=""
+                  name={clientAddress.country}
+                  placeholder={clientAddress.country}
+                  onChange={(e) =>
+                    setClientAddress({
+                      ...clientAddress,
+                      country: e.target.value,
+                    })
+                  }
                   id=""
                 />
               </div>
@@ -293,7 +378,9 @@ const EditInvoice = ({ open, setOpen, singleData }) => {
                     borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                   }}
                   type="date"
-                  name=""
+                  name={createdAt}
+                  placeholder={createdAt}
+                  onChange={(e) => setCreatedAt(e.target.value)}
                   id=""
                 />
               </div>
@@ -314,13 +401,15 @@ const EditInvoice = ({ open, setOpen, singleData }) => {
                     color: `${isDark ? "white" : "black"}`,
                     borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                   }}
-                  name=""
+                  name={paymentTerms}
+                  value={paymentTerms}
+                  onChange={(e) => setPaymentTerms(e.target.value)}
                   id=""
                 >
-                  <option value="">Net 1 day</option>
-                  <option value="">Net 7 days</option>
-                  <option value="">Net 14 days</option>
-                  <option value="">Net 30 days</option>
+                  <option value="1">Net 1 day</option>
+                  <option value="7">Net 7 days</option>
+                  <option value="14">Net 14 days</option>
+                  <option value="30">Net 30 days</option>
                 </select>
               </div>
             </div>
@@ -342,7 +431,9 @@ const EditInvoice = ({ open, setOpen, singleData }) => {
                   borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                 }}
                 type="text"
-                name=""
+                name={description}
+                placeholder={description}
+                onChange={(e) => setDescription(e.target.value)}
                 id=""
               />
             </div>
@@ -358,7 +449,7 @@ const EditInvoice = ({ open, setOpen, singleData }) => {
           </div>
 
           {items &&
-            items.map((item) => (
+            items.map((item, index) => (
               <div className="form-item-flex-table">
                 <div className="form-item input-item-name">
                   <div className="form-label">
@@ -377,7 +468,8 @@ const EditInvoice = ({ open, setOpen, singleData }) => {
                         borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                       }}
                       type="text"
-                      name=""
+                      name="name"
+                      onChange={(e) => (item.name = e.target.value)}
                       id=""
                       placeholder={`${item.name}`}
                     />
@@ -400,7 +492,8 @@ const EditInvoice = ({ open, setOpen, singleData }) => {
                         borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                       }}
                       type="text"
-                      name=""
+                      name="quantity"
+                      onChange={(e) => (item.quantity = e.target.value)}
                       id=""
                       placeholder={`${item.quantity}`}
                     />
@@ -423,7 +516,8 @@ const EditInvoice = ({ open, setOpen, singleData }) => {
                         borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                       }}
                       type="text"
-                      name=""
+                      name="price"
+                      onChange={(e) => (item.price = e.target.value)}
                       id=""
                       placeholder={`${item.price}`}
                     />
@@ -441,7 +535,21 @@ const EditInvoice = ({ open, setOpen, singleData }) => {
                   <div className="form-input ">
                     <input
                       type="text"
-                      placeholder={`${item.total}`}
+                      placeholder={`${
+                        isNaN(item.quantity) || isNaN(item.price)
+                          ? 0
+                          : item.quantity * item.price
+                      }`}
+                      value={`${
+                        isNaN(item.quantity) || isNaN(item.price)
+                          ? 0
+                          : item.quantity * item.price
+                      }`}
+                      onChange={`${
+                        isNaN(item.quantity) || isNaN(item.price)
+                          ? 0
+                          : item.quantity * item.price
+                      }`}
                       style={{
                         color: `${isDark ? "white" : "#7C5DFA"}`,
                         backgroundColor: `${isDark ? "#252945" : "white"}`,
@@ -450,7 +558,10 @@ const EditInvoice = ({ open, setOpen, singleData }) => {
                     />
                   </div>
                 </div>
-                <div className="form-item input-icon">
+                <div
+                  className="form-item input-icon"
+                  onClick={() => handleItemDelete(index)}
+                >
                   <img src={deleteIcon} alt="" />
                 </div>
               </div>
@@ -462,6 +573,7 @@ const EditInvoice = ({ open, setOpen, singleData }) => {
                 color: `${isDark ? "white" : "#7E88C3"}`,
               }}
               className="form-item-button"
+              onClick={(e) => addItemHandler(e)}
             >
               <img src={plusIcon} alt="" /> Add New Item
             </button>
@@ -470,10 +582,16 @@ const EditInvoice = ({ open, setOpen, singleData }) => {
             <div className="button-flex">
               <div></div>
               <div className="button-flex-item">
-                <button className="form-item-button button-light">
+                <button
+                  className="form-item-button button-light"
+                  onClick={() => setOpen(false)}
+                >
                   Cancel
                 </button>
-                <button className="form-item-button button-blue">
+                <button
+                  className="form-item-button button-blue"
+                  onClick={(e) => saveAndSubmitHandler(e)}
+                >
                   Save Changes
                 </button>
               </div>

@@ -12,7 +12,7 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: "/invoice/:id",
+    path: "/invoice/:id/:index",
     element: <SingleInvoice />,
   },
 ]);
