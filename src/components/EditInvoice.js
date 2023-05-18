@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/sidebar.css";
 import deleteIcon from "../assets/icon-delete.svg";
 import plusIcon from "../assets/icon-plus.svg";
@@ -11,9 +11,9 @@ import { darkMode, invoices } from "../state/state";
 const EditInvoice = ({ open, setOpen, singleData, index, id }) => {
   const isDark = useRecoilValue(darkMode);
   const navigate = useNavigate();
-  const [items, setItems] = useState(singleData.items);
   const [invoiceList, setinvoiceList] = useRecoilState(invoices);
   const [senderAddress, setSenderAddress] = useState(singleData.senderAddress);
+  const [items, setItems] = useState([]);
   const [clientName, setClientName] = useState(singleData.clientName);
   const [clientEmail, setClientEmail] = useState(singleData.clientEmail);
   const [clientAddress, setClientAddress] = useState(singleData.clientAddress);
@@ -21,9 +21,57 @@ const EditInvoice = ({ open, setOpen, singleData, index, id }) => {
   const [paymentTerms, setPaymentTerms] = useState(singleData.paymentTerms);
   const [description, setDescription] = useState(singleData.description);
 
+  const makeWritable = () => {
+    for (let item of singleData.items) {
+      let obj = {};
+      Object.defineProperties(obj, {
+        name: {
+          value: item.value,
+          writable: true,
+        },
+        quantity: {
+          value: item.quantity,
+          writable: true,
+        },
+        price: {
+          value: item.value,
+          writable: true,
+        },
+        total: {
+          value: item.total,
+          writable: true,
+        },
+      });
+      setItems((prev) => [...prev, obj]);
+    }
+  };
+
+  useEffect(() => {
+    makeWritable();
+  }, []);
+
   const addItemHandler = (e) => {
     e.preventDefault();
-    setItems([...items, { name: "", quantity: "", price: "", total: 0 }]);
+    let obj = {};
+    Object.defineProperties(obj, {
+      name: {
+        value: "",
+        writable: true,
+      },
+      quantity: {
+        value: "",
+        writable: true,
+      },
+      price: {
+        value: "",
+        writable: true,
+      },
+      total: {
+        value: 0,
+        writable: true,
+      },
+    });
+    setItems([...items, obj]);
   };
 
   const handleItemDelete = (index) => {
@@ -470,7 +518,6 @@ const EditInvoice = ({ open, setOpen, singleData, index, id }) => {
                       type="text"
                       name="name"
                       onChange={(e) => (item.name = e.target.value)}
-                      id=""
                       placeholder={`${item.name}`}
                     />
                   </div>
@@ -533,29 +580,16 @@ const EditInvoice = ({ open, setOpen, singleData, index, id }) => {
                     </label>
                   </div>
                   <div className="form-input ">
-                    <input
-                      type="text"
-                      placeholder={`${
-                        isNaN(item.quantity) || isNaN(item.price)
-                          ? 0
-                          : item.quantity * item.price
-                      }`}
-                      value={`${
-                        isNaN(item.quantity) || isNaN(item.price)
-                          ? 0
-                          : item.quantity * item.price
-                      }`}
-                      onChange={`${
-                        isNaN(item.quantity) || isNaN(item.price)
-                          ? 0
-                          : item.quantity * item.price
-                      }`}
+                    <p
                       style={{
                         color: `${isDark ? "white" : "#7C5DFA"}`,
-                        backgroundColor: `${isDark ? "#252945" : "white"}`,
                         borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                       }}
-                    />
+                    >
+                      {isNaN(item.quantity) || isNaN(item.price)
+                        ? 0
+                        : item.quantity * item.price}
+                    </p>
                   </div>
                 </div>
                 <div

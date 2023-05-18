@@ -31,7 +31,27 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
 
   const addItemHandler = (e) => {
     e.preventDefault();
-    setItems([...items, { name: "", quantity: "", price: "", total: 0 }]);
+    let obj = {};
+
+    Object.defineProperties(obj, {
+      name: {
+        value: "",
+        writable: true,
+      },
+      quantity: {
+        value: "",
+        writable: true,
+      },
+      price: {
+        value: "",
+        writable: true,
+      },
+      total: {
+        value: 0,
+        writable: true,
+      },
+    });
+    setItems([...items, obj]);
   };
 
   const handleItemDelete = (index) => {
@@ -509,29 +529,16 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
                     </label>
                   </div>
                   <div className="form-input ">
-                    <input
+                    <p
                       style={{
-                        backgroundColor: `${isDark ? "#252945" : "white"}`,
-                        color: `${isDark ? "white" : "black"}`,
+                        color: `${isDark ? "white" : "#7C5DFA"}`,
                         borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                       }}
-                      type="text"
-                      placeholder={`${
-                        isNaN(item.quantity) || isNaN(item.price)
-                          ? 0
-                          : item.quantity * item.price
-                      }`}
-                      value={`${
-                        isNaN(item.quantity) || isNaN(item.price)
-                          ? 0
-                          : item.quantity * item.price
-                      }`}
-                      onChange={`${
-                        isNaN(item.quantity) || isNaN(item.price)
-                          ? 0
-                          : item.quantity * item.price
-                      }`}
-                    />
+                    >
+                      {isNaN(item.quantity) || isNaN(item.price)
+                        ? 0
+                        : item.quantity * item.price}
+                    </p>
                   </div>
                 </div>
                 <div

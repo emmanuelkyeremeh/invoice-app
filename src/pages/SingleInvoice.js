@@ -224,8 +224,8 @@ const SingleInvoice = () => {
           <EditInvoice
             open={open}
             setOpen={setOpen}
-            singleData={singleData}
             index={index}
+            singleData={singleData}
             id={id}
           />
         )}
