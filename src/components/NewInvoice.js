@@ -28,30 +28,29 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
   const [createdAt, setCreatedAt] = useState("");
   const [paymentTerms, setPaymentTerms] = useState("");
   const [description, setDescription] = useState("");
+  const [showForm, setShowForm] = useState(false);
+  const [formItems, setFormItems] = useState({
+    name: "",
+    quantity: "",
+    price: "",
+    total: 0,
+  });
 
   const addItemHandler = (e) => {
     e.preventDefault();
-    let obj = {};
+    setShowForm(true);
 
-    Object.defineProperties(obj, {
-      name: {
-        value: "",
-        writable: true,
-      },
-      quantity: {
-        value: "",
-        writable: true,
-      },
-      price: {
-        value: "",
-        writable: true,
-      },
-      total: {
-        value: 0,
-        writable: true,
-      },
-    });
-    setItems([...items, obj]);
+    if (formItems.name.length && formItems.quantity.length) {
+      setItems([...items, formItems]);
+
+      setFormItems({
+        ...formItems,
+        name: "",
+        quantity: "",
+        price: "",
+        total: 0,
+      });
+    }
   };
 
   const handleItemDelete = (index) => {
@@ -60,9 +59,15 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
 
   const saveAndSubmitHandler = (e, status) => {
     e.preventDefault();
+
+    let submittedItems = [...items];
+
+    if (formItems.name.length && formItems.quantity.length) {
+      submittedItems.push(formItems);
+    }
     let total = 0;
 
-    for (let item of items) {
+    for (let item of submittedItems) {
       item.total = parseInt(item.quantity) * parseInt(item.price);
       total += parseInt(item.total);
     }
@@ -78,7 +83,7 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
       status: status,
       senderAddress: senderAddress,
       clientAddress: clientAddress,
-      items: items,
+      items: submittedItems,
       total: total,
     };
 
@@ -447,18 +452,54 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
             <h4>Item List</h4>
           </div>
 
+          <div className="form-item-flex-table">
+            <div className="form-item input-item-name">
+              <div className="form-label">
+                <label
+                  htmlFor=""
+                  style={{ color: `${isDark ? "white" : "#7C5DFA"}` }}
+                >
+                  Item Name
+                </label>
+              </div>
+            </div>
+            <div className="form-item input-quantity">
+              <div className="form-label">
+                <label
+                  htmlFor=""
+                  style={{ color: `${isDark ? "white" : "#7C5DFA"}` }}
+                >
+                  Qty
+                </label>
+              </div>
+            </div>
+            <div className="form-item input-price">
+              <div className="form-label">
+                <label
+                  htmlFor=""
+                  style={{ color: `${isDark ? "white" : "#7C5DFA"}` }}
+                >
+                  Price
+                </label>
+              </div>
+            </div>
+            <div className="form-item input-total">
+              <div className="form-label">
+                <label
+                  htmlFor=""
+                  style={{ color: `${isDark ? "white" : "#7C5DFA"}` }}
+                >
+                  Total
+                </label>
+              </div>
+            </div>
+            <div className="form-item input-icon"></div>
+          </div>
+
           {items &&
             items.map((item, index) => (
               <div className="form-item-flex-table">
                 <div className="form-item input-item-name">
-                  <div className="form-label">
-                    <label
-                      htmlFor=""
-                      style={{ color: `${isDark ? "white" : "#7C5DFA"}` }}
-                    >
-                      Item Name
-                    </label>
-                  </div>
                   <div className="form-input ">
                     <input
                       style={{
@@ -468,20 +509,13 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
                       }}
                       type="text"
                       name="name"
-                      onChange={(e) => (item.name = e.target.value)}
+                      placeholder={item.name}
+                      disabled
                       id=""
                     />
                   </div>
                 </div>
                 <div className="form-item input-quantity">
-                  <div className="form-label">
-                    <label
-                      htmlFor=""
-                      style={{ color: `${isDark ? "white" : "#7C5DFA"}` }}
-                    >
-                      Qty
-                    </label>
-                  </div>
                   <div className="form-input ">
                     <input
                       style={{
@@ -491,20 +525,13 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
                       }}
                       type="text"
                       name="quantity"
-                      onChange={(e) => (item.quantity = e.target.value)}
+                      disabled
+                      placeholder={item.quantity}
                       id=""
                     />
                   </div>
                 </div>
                 <div className="form-item input-price">
-                  <div className="form-label">
-                    <label
-                      htmlFor=""
-                      style={{ color: `${isDark ? "white" : "#7C5DFA"}` }}
-                    >
-                      Price
-                    </label>
-                  </div>
                   <div className="form-input ">
                     <input
                       style={{
@@ -514,20 +541,13 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
                       }}
                       type="text"
                       name="price"
-                      onChange={(e) => (item.price = e.target.value)}
+                      disabled
+                      placeholder={item.price}
                       id=""
                     />
                   </div>
                 </div>
                 <div className="form-item input-total">
-                  <div className="form-label">
-                    <label
-                      htmlFor=""
-                      style={{ color: `${isDark ? "white" : "#7C5DFA"}` }}
-                    >
-                      Total
-                    </label>
-                  </div>
                   <div className="form-input ">
                     <p
                       style={{
@@ -549,18 +569,107 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
                 </div>
               </div>
             ))}
-          <div className="form-item">
-            <button
-              style={{
-                backgroundColor: `${isDark ? "#252945" : "#DFE3FA"}`,
-                color: `${isDark ? "white" : "#7E88C3"}`,
-              }}
-              onClick={(e) => addItemHandler(e)}
-              className="form-item-button"
-            >
-              <img src={plusIcon} alt="" /> Add New Item
-            </button>
-          </div>
+
+          <form className="form-item">
+            {showForm && (
+              <div className="form-item-flex-table">
+                <div className="form-item input-item-name">
+                  <div className="form-input ">
+                    <input
+                      style={{
+                        backgroundColor: `${isDark ? "#252945" : "white"}`,
+                        color: `${isDark ? "white" : "black"}`,
+                        borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
+                      }}
+                      type="text"
+                      // name={formItems.name}
+                      onChange={(e) =>
+                        setFormItems({ ...formItems, name: e.target.value })
+                      }
+                      placeholder="Name"
+                    />
+                  </div>
+                </div>
+                <div className="form-item input-quantity">
+                  <div className="form-input ">
+                    <input
+                      style={{
+                        backgroundColor: `${isDark ? "#252945" : "white"}`,
+                        color: `${isDark ? "white" : "black"}`,
+                        borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
+                      }}
+                      type="text"
+                      // name={formItems.quantity}
+                      onChange={(e) =>
+                        setFormItems({ ...formItems, quantity: e.target.value })
+                      }
+                      placeholder="qty"
+                      id=""
+                    />
+                  </div>
+                </div>
+                <div className="form-item input-price">
+                  <div className="form-input ">
+                    <input
+                      style={{
+                        backgroundColor: `${isDark ? "#252945" : "white"}`,
+                        color: `${isDark ? "white" : "black"}`,
+                        borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
+                      }}
+                      type="text"
+                      // name={formItems.price}
+                      onChange={(e) =>
+                        setFormItems({ ...formItems, price: e.target.value })
+                      }
+                      placeholder="price"
+                      id=""
+                    />
+                  </div>
+                </div>
+                <div className="form-item input-total">
+                  <div className="form-input ">
+                    <p
+                      style={{
+                        color: `${isDark ? "white" : "#7C5DFA"}`,
+                        borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
+                      }}
+                    >
+                      {isNaN(formItems.quantity) || isNaN(formItems.price)
+                        ? 0
+                        : formItems.quantity * formItems.price}
+                    </p>
+                  </div>
+                </div>
+                <div
+                  className="form-item input-icon"
+                  onClick={() =>
+                    setFormItems({
+                      name: "",
+                      quantity: "",
+                      price: "",
+                      total: 0,
+                    })
+                  }
+                >
+                  <img src={deleteIcon} alt="" />
+                </div>
+              </div>
+            )}
+            <div className="form-item">
+              <button
+                style={{
+                  backgroundColor: `${isDark ? "#252945" : "#DFE3FA"}`,
+                  color: `${isDark ? "white" : "#7E88C3"}`,
+                }}
+                type="submit"
+                onClick={(e) => addItemHandler(e)}
+                className="form-item-button"
+              >
+                <img src={plusIcon} alt="" /> Add New Item
+              </button>
+            </div>
+          </form>
+
           <div className="form-item">
             <div className="button-flex">
               <div>

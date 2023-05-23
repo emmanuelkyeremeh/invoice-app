@@ -8,10 +8,11 @@ import { useNavigate } from "react-router";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { darkMode, invoices } from "../state/state";
 
-const EditInvoice = ({ open, setOpen, singleData, index, id }) => {
+const EditInvoice = ({ open, setOpen, index, id }) => {
   const isDark = useRecoilValue(darkMode);
   const navigate = useNavigate();
-  const [invoiceList, setinvoiceList] = useRecoilState(invoices);
+  const [invoice, setInvoices] = useRecoilState(invoices);
+  const singleData = invoice.find((elem) => elem.id === id);
   const [senderAddress, setSenderAddress] = useState(singleData.senderAddress);
   const [items, setItems] = useState([]);
   const [clientName, setClientName] = useState(singleData.clientName);
@@ -21,34 +22,36 @@ const EditInvoice = ({ open, setOpen, singleData, index, id }) => {
   const [paymentTerms, setPaymentTerms] = useState(singleData.paymentTerms);
   const [description, setDescription] = useState(singleData.description);
 
-  const makeWritable = () => {
-    for (let item of singleData.items) {
-      let obj = {};
-      Object.defineProperties(obj, {
-        name: {
-          value: item.value,
-          writable: true,
-        },
-        quantity: {
-          value: item.quantity,
-          writable: true,
-        },
-        price: {
-          value: item.value,
-          writable: true,
-        },
-        total: {
-          value: item.total,
-          writable: true,
-        },
-      });
-      setItems((prev) => [...prev, obj]);
-    }
-  };
+  console.log(singleData);
 
-  useEffect(() => {
-    makeWritable();
-  }, []);
+  // const makeWritable = () => {
+  //   for (let item of singleData.items) {
+  //     let obj = {};
+  //     Object.defineProperties(obj, {
+  //       name: {
+  //         value: item.value,
+  //         writable: true,
+  //       },
+  //       quantity: {
+  //         value: item.quantity,
+  //         writable: true,
+  //       },
+  //       price: {
+  //         value: item.value,
+  //         writable: true,
+  //       },
+  //       total: {
+  //         value: item.total,
+  //         writable: true,
+  //       },
+  //     });
+  //     setItems((prev) => [...prev, obj]);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   makeWritable();
+  // }, []);
 
   const addItemHandler = (e) => {
     e.preventDefault();
@@ -78,35 +81,35 @@ const EditInvoice = ({ open, setOpen, singleData, index, id }) => {
     setItems(items.filter((item, indx) => indx !== index));
   };
 
-  const saveAndSubmitHandler = (e) => {
-    e.preventDefault();
-    let total = 0;
+  // const saveAndSubmitHandler = (e) => {
+  //   e.preventDefault();
+  //   let total = 0;
 
-    for (let item of items) {
-      item.total = parseInt(item.quantity) * parseInt(item.price);
-      total += parseInt(item.total);
-    }
+  //   for (let item of items) {
+  //     item.total = parseInt(item.quantity) * parseInt(item.price);
+  //     total += parseInt(item.total);
+  //   }
 
-    const newInvoice = {
-      id: id,
-      createdAt: createdAt,
-      paymentDue: createdAt,
-      description: description,
-      paymentTerms: paymentTerms,
-      clientName: clientName,
-      clientEmail: clientEmail,
-      status: singleData.status,
-      senderAddress: senderAddress,
-      clientAddress: clientAddress,
-      items: items,
-      total: total,
-    };
+  //   const newInvoice = {
+  //     id: id,
+  //     createdAt: createdAt,
+  //     paymentDue: createdAt,
+  //     description: description,
+  //     paymentTerms: paymentTerms,
+  //     clientName: clientName,
+  //     clientEmail: clientEmail,
+  //     status: singleData.status,
+  //     senderAddress: senderAddress,
+  //     clientAddress: clientAddress,
+  //     items: items,
+  //     total: total,
+  //   };
 
-    setinvoiceList((prev) => ({
-      ...prev,
-      [index]: newInvoice,
-    }));
-  };
+  //   setinvoiceList((prev) => ({
+  //     ...prev,
+  //     [index]: newInvoice,
+  //   }));
+  // };
 
   return (
     <div className="sidebar">
@@ -624,7 +627,7 @@ const EditInvoice = ({ open, setOpen, singleData, index, id }) => {
                 </button>
                 <button
                   className="form-item-button button-blue"
-                  onClick={(e) => saveAndSubmitHandler(e)}
+                  // onClick={(e) => saveAndSubmitHandler(e)}
                 >
                   Save Changes
                 </button>

@@ -221,13 +221,7 @@ const SingleInvoice = () => {
           </div>
         </div>
         {open && (
-          <EditInvoice
-            open={open}
-            setOpen={setOpen}
-            index={index}
-            singleData={singleData}
-            id={id}
-          />
+          <EditInvoice open={open} setOpen={setOpen} index={index} id={id} />
         )}
         {openDeleteDialog && (
           <DeleteInvoice
