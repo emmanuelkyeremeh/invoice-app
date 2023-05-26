@@ -8,108 +8,90 @@ import { useNavigate } from "react-router";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { darkMode, invoices } from "../state/state";
 
-const EditInvoice = ({ open, setOpen, index, id }) => {
+const EditInvoice = ({ open, setOpen, id }) => {
   const isDark = useRecoilValue(darkMode);
   const navigate = useNavigate();
-  const [invoice, setInvoices] = useRecoilState(invoices);
-  const singleData = invoice.find((elem) => elem.id === id);
+  const [invoiceList, setInvoiceList] = useRecoilState(invoices);
+  const singleData = invoiceList.find((elem) => elem.id === id);
   const [senderAddress, setSenderAddress] = useState(singleData.senderAddress);
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState([...singleData.items]);
   const [clientName, setClientName] = useState(singleData.clientName);
   const [clientEmail, setClientEmail] = useState(singleData.clientEmail);
   const [clientAddress, setClientAddress] = useState(singleData.clientAddress);
   const [createdAt, setCreatedAt] = useState(singleData.createdAt);
   const [paymentTerms, setPaymentTerms] = useState(singleData.paymentTerms);
   const [description, setDescription] = useState(singleData.description);
-
-  console.log(singleData);
-
-  // const makeWritable = () => {
-  //   for (let item of singleData.items) {
-  //     let obj = {};
-  //     Object.defineProperties(obj, {
-  //       name: {
-  //         value: item.value,
-  //         writable: true,
-  //       },
-  //       quantity: {
-  //         value: item.quantity,
-  //         writable: true,
-  //       },
-  //       price: {
-  //         value: item.value,
-  //         writable: true,
-  //       },
-  //       total: {
-  //         value: item.total,
-  //         writable: true,
-  //       },
-  //     });
-  //     setItems((prev) => [...prev, obj]);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   makeWritable();
-  // }, []);
+  const [formItems, setFormItems] = useState({
+    name: "",
+    quantity: "",
+    price: "",
+    total: 0,
+  });
+  const [showForm, setShowForm] = useState(false);
 
   const addItemHandler = (e) => {
     e.preventDefault();
-    let obj = {};
-    Object.defineProperties(obj, {
-      name: {
-        value: "",
-        writable: true,
-      },
-      quantity: {
-        value: "",
-        writable: true,
-      },
-      price: {
-        value: "",
-        writable: true,
-      },
-      total: {
-        value: 0,
-        writable: true,
-      },
-    });
-    setItems([...items, obj]);
+    setShowForm(true);
+
+    if (formItems.name.length && formItems.quantity.length) {
+      setItems([
+        ...items,
+        {
+          ...formItems,
+          total: parseInt(formItems.quantity) * parseInt(formItems.price),
+        },
+      ]);
+
+      setFormItems({
+        ...formItems,
+        name: "",
+        quantity: "",
+        price: "",
+        total: 0,
+      });
+    }
   };
 
   const handleItemDelete = (index) => {
     setItems(items.filter((item, indx) => indx !== index));
   };
 
-  // const saveAndSubmitHandler = (e) => {
-  //   e.preventDefault();
-  //   let total = 0;
+  const saveAndSubmitHandler = (e) => {
+    e.preventDefault();
 
-  //   for (let item of items) {
-  //     item.total = parseInt(item.quantity) * parseInt(item.price);
-  //     total += parseInt(item.total);
-  //   }
+    setInvoiceList(invoiceList.filter((invoice) => invoice.id !== id));
 
-  //   const newInvoice = {
-  //     id: id,
-  //     createdAt: createdAt,
-  //     paymentDue: createdAt,
-  //     description: description,
-  //     paymentTerms: paymentTerms,
-  //     clientName: clientName,
-  //     clientEmail: clientEmail,
-  //     status: singleData.status,
-  //     senderAddress: senderAddress,
-  //     clientAddress: clientAddress,
-  //     items: items,
-  //     total: total,
-  //   };
+    let submittedItems = [...items];
 
-  //   setinvoiceList((prev) => ({
-  //     ...prev,
-  //     [index]: newInvoice,
-  //   }));
-  // };
+    if (formItems.name.length && formItems.quantity.length) {
+      submittedItems.push({
+        ...formItems,
+        total: parseInt(formItems.quantity) * formItems.price,
+      });
+    }
+    let total = 0;
+
+    for (let item of submittedItems) {
+      total += parseInt(item.total);
+    }
+
+    const EditedInvoice = {
+      id: id,
+      createdAt: createdAt,
+      paymentDue: createdAt,
+      description: description,
+      paymentTerms: paymentTerms,
+      clientName: clientName,
+      clientEmail: clientEmail,
+      status: singleData.status,
+      senderAddress: senderAddress,
+      clientAddress: clientAddress,
+      items: submittedItems,
+      total: total,
+    };
+
+    setInvoiceList((prev) => [...prev, EditedInvoice]);
+  };
 
   return (
     <div className="sidebar">
@@ -499,18 +481,54 @@ const EditInvoice = ({ open, setOpen, index, id }) => {
             </h4>
           </div>
 
+          <div className="form-item-flex-table">
+            <div className="form-item input-item-name">
+              <div className="form-label">
+                <label
+                  htmlFor=""
+                  style={{ color: `${isDark ? "white" : "#7C5DFA"}` }}
+                >
+                  Item Name
+                </label>
+              </div>
+            </div>
+            <div className="form-item input-quantity">
+              <div className="form-label">
+                <label
+                  htmlFor=""
+                  style={{ color: `${isDark ? "white" : "#7C5DFA"}` }}
+                >
+                  Qty
+                </label>
+              </div>
+            </div>
+            <div className="form-item input-price">
+              <div className="form-label">
+                <label
+                  htmlFor=""
+                  style={{ color: `${isDark ? "white" : "#7C5DFA"}` }}
+                >
+                  Price
+                </label>
+              </div>
+            </div>
+            <div className="form-item input-total">
+              <div className="form-label">
+                <label
+                  htmlFor=""
+                  style={{ color: `${isDark ? "white" : "#7C5DFA"}` }}
+                >
+                  Total
+                </label>
+              </div>
+            </div>
+            <div className="form-item input-icon"></div>
+          </div>
+
           {items &&
             items.map((item, index) => (
               <div className="form-item-flex-table">
                 <div className="form-item input-item-name">
-                  <div className="form-label">
-                    <label
-                      htmlFor=""
-                      style={{ color: `${isDark ? "white" : "#7C5DFA"}` }}
-                    >
-                      Item Name
-                    </label>
-                  </div>
                   <div className="form-input ">
                     <input
                       style={{
@@ -520,20 +538,12 @@ const EditInvoice = ({ open, setOpen, index, id }) => {
                       }}
                       type="text"
                       name="name"
-                      onChange={(e) => (item.name = e.target.value)}
+                      disabled
                       placeholder={`${item.name}`}
                     />
                   </div>
                 </div>
                 <div className="form-item input-quantity">
-                  <div className="form-label">
-                    <label
-                      htmlFor=""
-                      style={{ color: `${isDark ? "white" : "#7C5DFA"}` }}
-                    >
-                      Qty
-                    </label>
-                  </div>
                   <div className="form-input ">
                     <input
                       style={{
@@ -543,21 +553,13 @@ const EditInvoice = ({ open, setOpen, index, id }) => {
                       }}
                       type="text"
                       name="quantity"
-                      onChange={(e) => (item.quantity = e.target.value)}
+                      disabled
                       id=""
                       placeholder={`${item.quantity}`}
                     />
                   </div>
                 </div>
                 <div className="form-item input-price">
-                  <div className="form-label">
-                    <label
-                      htmlFor=""
-                      style={{ color: `${isDark ? "white" : "#7C5DFA"}` }}
-                    >
-                      Price
-                    </label>
-                  </div>
                   <div className="form-input ">
                     <input
                       style={{
@@ -567,21 +569,13 @@ const EditInvoice = ({ open, setOpen, index, id }) => {
                       }}
                       type="text"
                       name="price"
-                      onChange={(e) => (item.price = e.target.value)}
+                      disabled
                       id=""
                       placeholder={`${item.price}`}
                     />
                   </div>
                 </div>
                 <div className="form-item input-total">
-                  <div className="form-label">
-                    <label
-                      htmlFor=""
-                      style={{ color: `${isDark ? "white" : "#7C5DFA"}` }}
-                    >
-                      Total
-                    </label>
-                  </div>
                   <div className="form-input ">
                     <p
                       style={{
@@ -603,17 +597,102 @@ const EditInvoice = ({ open, setOpen, index, id }) => {
                 </div>
               </div>
             ))}
+
           <div className="form-item">
-            <button
-              style={{
-                backgroundColor: `${isDark ? "#252945" : "#DFE3FA"}`,
-                color: `${isDark ? "white" : "#7E88C3"}`,
-              }}
-              className="form-item-button"
-              onClick={(e) => addItemHandler(e)}
-            >
-              <img src={plusIcon} alt="" /> Add New Item
-            </button>
+            {showForm && (
+              <div className="form-item-flex-table">
+                <div className="form-item input-item-name">
+                  <div className="form-input ">
+                    <input
+                      style={{
+                        backgroundColor: `${isDark ? "#252945" : "white"}`,
+                        color: `${isDark ? "white" : "black"}`,
+                        borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
+                      }}
+                      type="text"
+                      onChange={(e) =>
+                        setFormItems({ ...formItems, name: e.target.value })
+                      }
+                      placeholder="Name"
+                    />
+                  </div>
+                </div>
+                <div className="form-item input-quantity">
+                  <div className="form-input ">
+                    <input
+                      style={{
+                        backgroundColor: `${isDark ? "#252945" : "white"}`,
+                        color: `${isDark ? "white" : "black"}`,
+                        borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
+                      }}
+                      type="text"
+                      onChange={(e) =>
+                        setFormItems({ ...formItems, quantity: e.target.value })
+                      }
+                      placeholder="qty"
+                      id=""
+                    />
+                  </div>
+                </div>
+                <div className="form-item input-price">
+                  <div className="form-input ">
+                    <input
+                      style={{
+                        backgroundColor: `${isDark ? "#252945" : "white"}`,
+                        color: `${isDark ? "white" : "black"}`,
+                        borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
+                      }}
+                      type="text"
+                      onChange={(e) =>
+                        setFormItems({ ...formItems, price: e.target.value })
+                      }
+                      placeholder="price"
+                      id=""
+                    />
+                  </div>
+                </div>
+                <div className="form-item input-total">
+                  <div className="form-input ">
+                    <p
+                      style={{
+                        color: `${isDark ? "white" : "#7C5DFA"}`,
+                        borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
+                      }}
+                    >
+                      {isNaN(formItems.quantity) || isNaN(formItems.price)
+                        ? 0
+                        : formItems.quantity * formItems.price}
+                    </p>
+                  </div>
+                </div>
+                <div
+                  className="form-item input-icon"
+                  onClick={() =>
+                    setFormItems({
+                      name: "",
+                      quantity: "",
+                      price: "",
+                      total: 0,
+                    })
+                  }
+                >
+                  <img src={deleteIcon} alt="" />
+                </div>
+              </div>
+            )}
+            <div className="form-item">
+              <button
+                style={{
+                  backgroundColor: `${isDark ? "#252945" : "#DFE3FA"}`,
+                  color: `${isDark ? "white" : "#7E88C3"}`,
+                }}
+                type="submit"
+                onClick={(e) => addItemHandler(e)}
+                className="form-item-button"
+              >
+                <img src={plusIcon} alt="" /> Add New Item
+              </button>
+            </div>
           </div>
           <div className="form-item">
             <div className="button-flex">
@@ -627,7 +706,7 @@ const EditInvoice = ({ open, setOpen, index, id }) => {
                 </button>
                 <button
                   className="form-item-button button-blue"
-                  // onClick={(e) => saveAndSubmitHandler(e)}
+                  onClick={(e) => saveAndSubmitHandler(e)}
                 >
                   Save Changes
                 </button>

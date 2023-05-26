@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { useRecoilState } from "recoil";
 import { invoices } from "../state/state";
 
-const DeleteInvoice = ({ id, open, setOpen, index }) => {
+const DeleteInvoice = ({ id, open, setOpen }) => {
   const navigate = useNavigate();
   const [invoiceList, setInvoiceList] = useRecoilState(invoices);
 

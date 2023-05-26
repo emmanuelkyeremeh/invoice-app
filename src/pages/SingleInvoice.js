@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../styles/app.css";
 import Navbar from "../components/Navbar";
@@ -11,11 +11,22 @@ import { darkMode, invoices } from "../state/state";
 import { useRecoilValue } from "recoil";
 
 const SingleInvoice = () => {
-  const { id, index } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const data = useRecoilValue(invoices);
-  const singleData = data.find((elem) => elem.id === id);
+  const [singleData, setSingleData] = useState(
+    data.find((elem) => elem.id === id)
+  );
+
+  useEffect(() => {
+    let updatedSingleData = data.find((elem) => elem.id === id);
+
+    if (updatedSingleData) {
+      setSingleData(updatedSingleData);
+    }
+  }, [data]);
+
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const isDark = useRecoilValue(darkMode);
   const {
@@ -220,15 +231,12 @@ const SingleInvoice = () => {
             </div>
           </div>
         </div>
-        {open && (
-          <EditInvoice open={open} setOpen={setOpen} index={index} id={id} />
-        )}
+        {open && <EditInvoice open={open} setOpen={setOpen} id={id} />}
         {openDeleteDialog && (
           <DeleteInvoice
             open={openDeleteDialog}
             setOpen={setOpenDeleteDialog}
             id={id}
-            index={index}
           />
         )}
       </div>

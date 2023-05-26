@@ -53,8 +53,8 @@ const App = () => {
           </div>
         </div>
         {data.length ? (
-          data.map((item, index) => (
-            <Link to={`/invoice/${item.id}/${index}`} key={item.id}>
+          data.map((item) => (
+            <Link to={`/invoice/${item.id}`} key={item.id}>
               <InvoiceList
                 id={item.id}
                 paymentDue={item.paymentDue}

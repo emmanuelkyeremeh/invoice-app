@@ -570,7 +570,7 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
               </div>
             ))}
 
-          <form className="form-item">
+          <div className="form-item">
             {showForm && (
               <div className="form-item-flex-table">
                 <div className="form-item input-item-name">
@@ -617,7 +617,6 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
                         borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                       }}
                       type="text"
-                      // name={formItems.price}
                       onChange={(e) =>
                         setFormItems({ ...formItems, price: e.target.value })
                       }
@@ -668,7 +667,7 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
                 <img src={plusIcon} alt="" /> Add New Item
               </button>
             </div>
-          </form>
+          </div>
 
           <div className="form-item">
             <div className="button-flex">
