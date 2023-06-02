@@ -8,6 +8,9 @@
     border-radius: 10px;
     cursor: pointer;
 }
+.invoice-list-container:hover{
+    border: 1px solid #7C5DFA;
+}
 .invoice-list-id{
     font-weight: bold;
 }
@@ -76,6 +79,9 @@ border-radius: 5px;
 }
 .invoice-list-icon{
     padding-left: 1rem;
+}
+.display-invoice-list-none{
+    display: none;
 }
 
 @media screen and (max-width:650px) {

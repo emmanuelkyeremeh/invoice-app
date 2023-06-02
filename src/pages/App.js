@@ -6,14 +6,36 @@ import "../styles/app.css";
 import InvoiceList from "../components/InvoiceList";
 import { Link } from "react-router-dom";
 import NewInvoice from "../components/NewInvoice";
-import { useRecoilValue } from "recoil";
-import { darkMode, invoices } from "../state/state.js";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { darkMode, displayFilter, invoices } from "../state/state.js";
 import illustrationEmpty from "../assets/illustration-empty.svg";
 
 const App = () => {
   const [openSidebar, setOpenSidebar] = useState(false);
   const isDark = useRecoilValue(darkMode);
   const data = useRecoilValue(invoices);
+  const [filters, setFilters] = useRecoilState(displayFilter);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [draft, setDraft] = useState(filters[0]);
+  const [pending, setPending] = useState(filters[1]);
+  const [paid, setPaid] = useState(filters[2]);
+
+  const showDropdownHandler = () => {
+    setShowDropdown(!showDropdown);
+  };
+
+  const handleChange = (status) => {
+    if (status === "draft") {
+      setDraft(!draft);
+      setFilters([!draft, pending, paid]);
+    } else if (status === "pending") {
+      setPending(!pending);
+      setFilters([draft, !pending, paid]);
+    } else {
+      setPaid(!paid);
+      setFilters([draft, pending, !paid]);
+    }
+  };
 
   return (
     <div
@@ -37,7 +59,57 @@ const App = () => {
           </div>
           <div className="invoice-page-info">
             <div className="invoice-page-info-filter">
-              Filter by status <img src={iconArrowDown} alt="" />
+              <div
+                className="invoice-page-info-filter-content"
+                onClick={() => showDropdownHandler()}
+              >
+                Filter by status <img src={iconArrowDown} alt="" />
+              </div>
+              {showDropdown && (
+                <div
+                  className="invoice-page-info-filter-dropdown"
+                  style={{
+                    color: `${isDark ? "white" : "black"}`,
+                    backgroundColor: `${isDark ? "#1E2139" : "white"}`,
+                    boxShadow: `${
+                      isDark
+                        ? "1px 1px 1px 1px rgb(31, 31, 31)"
+                        : "1px 1px 1px 1px #c0c0c0"
+                    }`,
+                  }}
+                >
+                  <div className="invoice-page-dropdown-item">
+                    <input
+                      type="checkbox"
+                      name="draft"
+                      id=""
+                      checked={draft}
+                      onChange={() => handleChange("draft")}
+                    />{" "}
+                    Draft
+                  </div>
+                  <div className="invoice-page-dropdown-item">
+                    <input
+                      type="checkbox"
+                      name="draft"
+                      id=""
+                      checked={pending}
+                      onChange={() => handleChange("pending")}
+                    />{" "}
+                    Pending
+                  </div>
+                  <div className="invoice-page-dropdown-item">
+                    <input
+                      type="checkbox"
+                      name="draft"
+                      id=""
+                      checked={paid}
+                      onChange={() => handleChange("paid")}
+                    />{" "}
+                    Paid
+                  </div>
+                </div>
+              )}
             </div>
             <div className="invoice-page-info-new">
               <button
@@ -61,6 +133,13 @@ const App = () => {
                 clientName={item.clientName}
                 total={item.total}
                 status={item.status}
+                showItem={
+                  item.status === "draft"
+                    ? draft
+                    : item.status === "pending"
+                    ? pending
+                    : paid
+                }
               />
             </Link>
           ))

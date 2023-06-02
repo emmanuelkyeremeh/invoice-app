@@ -89,8 +89,13 @@ const EditInvoice = ({ open, setOpen, id }) => {
       items: submittedItems,
       total: total,
     };
+    if (invoiceList.length) {
+      setInvoiceList((prev) => [...prev, EditedInvoice]);
+    } else {
+      setInvoiceList([EditedInvoice]);
+    }
 
-    setInvoiceList((prev) => [...prev, EditedInvoice]);
+    setOpen(false);
   };
 
   return (

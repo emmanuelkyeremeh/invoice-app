@@ -50,6 +50,7 @@
     background-color: #9277FF;
     color: white;
     margin-left: 1rem;
+    cursor: pointer;
 }
 .single-invoice-container-body{
     border-radius: 10px;

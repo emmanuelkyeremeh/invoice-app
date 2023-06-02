@@ -14,3 +14,9 @@ export const invoices = atom({
   default: [],
   effects_UNSTABLE: [persistAtom],
 });
+
+export const displayFilter = atom({
+  key: "filter",
+  default: [true, true, true],
+  effects_UNSTABLE: [persistAtom],
+});

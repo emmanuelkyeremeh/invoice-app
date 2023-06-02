@@ -4,11 +4,19 @@ import "../styles/invoiceList.css";
 import { useRecoilValue } from "recoil";
 import { darkMode } from "../state/state";
 
-const InvoiceList = ({ id, paymentDue, clientName, total, status }) => {
+const InvoiceList = ({
+  id,
+  paymentDue,
+  clientName,
+  total,
+  status,
+  showItem,
+}) => {
   const isDark = useRecoilValue(darkMode);
+  const display_none = `${showItem ? "" : "display-invoice-list-none"} `;
   return (
     <div
-      className="invoice-list-container"
+      className={`invoice-list-container ${display_none}`}
       style={{
         backgroundColor: `${isDark ? "#1E2139" : "white"}`,
         color: `${isDark ? "white" : "black"}`,

@@ -8,13 +8,14 @@ import "../styles/invoiceList.css";
 import EditInvoice from "../components/EditInvoice";
 import DeleteInvoice from "../components/DeleteInvoice";
 import { darkMode, invoices } from "../state/state";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 const SingleInvoice = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const data = useRecoilValue(invoices);
+  const setData = useSetRecoilState(invoices);
   const [singleData, setSingleData] = useState(
     data.find((elem) => elem.id === id)
   );
@@ -40,6 +41,18 @@ const SingleInvoice = () => {
     items,
     total,
   } = singleData;
+
+  const markAsPaidHandler = () => {
+    setData(data.filter((item) => item.id !== id));
+
+    let updatedData = { ...singleData, status: "paid" };
+
+    if (data.length) {
+      setData((prev) => [...prev, updatedData]);
+    } else {
+      setData([updatedData]);
+    }
+  };
 
   return (
     <div
@@ -97,7 +110,10 @@ const SingleInvoice = () => {
             >
               Delete
             </button>
-            <button className="single-invoice-container-button mark-as-paid">
+            <button
+              onClick={() => markAsPaidHandler()}
+              className="single-invoice-container-button mark-as-paid"
+            >
               Mark as Paid
             </button>
           </div>

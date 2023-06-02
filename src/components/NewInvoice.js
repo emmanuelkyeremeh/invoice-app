@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../styles/sidebar.css";
 import deleteIcon from "../assets/icon-delete.svg";
 import plusIcon from "../assets/icon-plus.svg";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { darkMode, invoices } from "../state/state";
 import nextId from "react-id-generator";
 
@@ -10,7 +10,7 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
   const htmlId = nextId();
   const [items, setItems] = useState([]);
   const isDark = useRecoilValue(darkMode);
-  const setinvoiceList = useSetRecoilState(invoices);
+  const [invoiceList, setinvoiceList] = useRecoilState(invoices);
   const [senderAddress, setSenderAddress] = useState({
     street: "",
     city: "",
@@ -87,7 +87,13 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
       total: total,
     };
 
-    setinvoiceList((prev) => [...prev, newInvoice]);
+    if (invoiceList.length) {
+      setinvoiceList([...invoiceList, newInvoice]);
+    } else {
+      setinvoiceList([newInvoice]);
+    }
+
+    setOpenSidebar(false);
   };
   return (
     <div className="sidebar">
