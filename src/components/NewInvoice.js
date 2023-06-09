@@ -5,6 +5,7 @@ import plusIcon from "../assets/icon-plus.svg";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { darkMode, invoices } from "../state/state";
 import nextId from "react-id-generator";
+import moment from "moment";
 
 const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
   const htmlId = nextId();
@@ -72,10 +73,14 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
       total += parseInt(item.total);
     }
 
+    let paymentDue = moment(`${createdAt.replaceAll("-", "")}`, "YYYYMMDD")
+      .add(parseInt(paymentTerms), "days")
+      .calendar();
+
     const newInvoice = {
       id: htmlId,
       createdAt: createdAt,
-      paymentDue: createdAt,
+      paymentDue: paymentDue,
       description: description,
       paymentTerms: paymentTerms,
       clientName: clientName,

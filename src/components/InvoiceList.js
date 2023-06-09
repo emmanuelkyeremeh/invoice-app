@@ -25,7 +25,7 @@ const InvoiceList = ({
       <div className="responsive-flex-div-left">
         <div className="invoice-list-id">#{id}</div>
         <div style={{ color: `${isDark ? "white" : "#7E88C3"}` }}>
-          {paymentDue}
+          {paymentDue.replaceAll("/", "-")}
         </div>
         <div className="display-none-responsive">
           <h2>${total}</h2>

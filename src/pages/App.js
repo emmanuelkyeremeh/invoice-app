@@ -129,6 +129,7 @@ const App = () => {
             <Link to={`/invoice/${item.id}`} key={item.id}>
               <InvoiceList
                 id={item.id}
+                key={item.id}
                 paymentDue={item.paymentDue}
                 clientName={item.clientName}
                 total={item.total}

@@ -537,7 +537,9 @@ const EditInvoice = ({ open, setOpen, id }) => {
                   <div className="form-input ">
                     <input
                       style={{
-                        backgroundColor: `${isDark ? "#252945" : "white"}`,
+                        backgroundColor: `${
+                          isDark ? "#1a1d30" : "rgb(233, 233, 233)"
+                        }`,
                         color: `${isDark ? "white" : "black"}`,
                         borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                       }}
@@ -552,7 +554,9 @@ const EditInvoice = ({ open, setOpen, id }) => {
                   <div className="form-input ">
                     <input
                       style={{
-                        backgroundColor: `${isDark ? "#252945" : "white"}`,
+                        backgroundColor: `${
+                          isDark ? "#1a1d30" : "rgb(233, 233, 233)"
+                        }`,
                         color: `${isDark ? "white" : "black"}`,
                         borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                       }}
@@ -568,7 +572,9 @@ const EditInvoice = ({ open, setOpen, id }) => {
                   <div className="form-input ">
                     <input
                       style={{
-                        backgroundColor: `${isDark ? "#252945" : "white"}`,
+                        backgroundColor: `${
+                          isDark ? "#1a1d30" : "rgb(233, 233, 233)"
+                        }`,
                         color: `${isDark ? "white" : "black"}`,
                         borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                       }}
@@ -670,19 +676,7 @@ const EditInvoice = ({ open, setOpen, id }) => {
                     </p>
                   </div>
                 </div>
-                <div
-                  className="form-item input-icon"
-                  onClick={() =>
-                    setFormItems({
-                      name: "",
-                      quantity: "",
-                      price: "",
-                      total: 0,
-                    })
-                  }
-                >
-                  <img src={deleteIcon} alt="" />
-                </div>
+                <div className="form-item input-icon"></div>
               </div>
             )}
             <div className="form-item">
