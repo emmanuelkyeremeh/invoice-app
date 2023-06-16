@@ -109,12 +109,12 @@ const EditInvoice = ({ open, setOpen, id }) => {
 
     for (let item in EditedInvoice) {
       if (item === "createdAt") {
-        if (createdAt.length)
+        if (!createdAt.length)
           setValidation({ ...validation, createdAt: false });
         validated = false;
       }
       if (item === "description") {
-        if (description.length)
+        if (!description.length)
           setValidation({ ...validation, description: false });
         validated = false;
       }

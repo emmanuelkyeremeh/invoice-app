@@ -110,12 +110,12 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
 
     for (let item in newInvoice) {
       if (item === "createdAt") {
-        if (createdAt.length)
+        if (!createdAt.length)
           setValidation({ ...validation, createdAt: false });
         validated = false;
       }
       if (item === "description") {
-        if (description.length)
+        if (!description.length)
           setValidation({ ...validation, description: false });
         validated = false;
       }
