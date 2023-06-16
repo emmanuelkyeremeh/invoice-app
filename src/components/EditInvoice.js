@@ -109,24 +109,28 @@ const EditInvoice = ({ open, setOpen, id }) => {
 
     for (let item in EditedInvoice) {
       if (item === "createdAt") {
-        if (!createdAt.length)
+        if (!createdAt.length) {
           setValidation({ ...validation, createdAt: false });
-        validated = false;
+          validated = false;
+        }
       }
       if (item === "description") {
-        if (!description.length)
+        if (!description.length) {
           setValidation({ ...validation, description: false });
-        validated = false;
+          validated = false;
+        }
       }
       if (item === "clientName") {
-        if (!clientName.length)
+        if (!clientName.length) {
           setValidation({ ...validation, clientName: false });
-        validated = false;
+          validated = false;
+        }
       }
       if (item === "clientEmail") {
-        if (!clientEmail.length)
+        if (!clientEmail.length) {
           setValidation({ ...validation, clientEmail: false });
-        validated = false;
+          validated = false;
+        }
       }
       if (item === "senderAddress") {
         if (!senderAddress.city.length) {
