@@ -52,6 +52,9 @@
     margin-left: 1rem;
     cursor: pointer;
 }
+.mark-as-paid-do-not-show{
+    display: none;
+}
 .single-invoice-container-body{
     border-radius: 10px;
     padding: 2rem;

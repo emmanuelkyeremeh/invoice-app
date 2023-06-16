@@ -37,6 +37,22 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
     total: 0,
   });
 
+  const [validation, setValidation] = useState({
+    createdAt: true,
+    paymentDue: true,
+    description: true,
+    clientName: true,
+    clientEmail: true,
+    senderAddressStreet: true,
+    senderAddressCity: true,
+    senderAddressPostCode: true,
+    senderAddressCountry: true,
+    clientAddressStreet: true,
+    clientAddressCity: true,
+    clientAddressPostCode: true,
+    clientAddressCountry: true,
+  });
+
   const addItemHandler = (e) => {
     e.preventDefault();
     setShowForm(true);
@@ -60,7 +76,7 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
 
   const saveAndSubmitHandler = (e, status) => {
     e.preventDefault();
-
+    let validated = true;
     let submittedItems = [...items];
 
     if (formItems.name.length && formItems.quantity.length) {
@@ -92,13 +108,75 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
       total: total,
     };
 
-    if (invoiceList.length) {
-      setinvoiceList([...invoiceList, newInvoice]);
-    } else {
-      setinvoiceList([newInvoice]);
+    for (let item in newInvoice) {
+      if (item === "createdAt") {
+        if (createdAt.length)
+          setValidation({ ...validation, createdAt: false });
+        validated = false;
+      }
+      if (item === "description") {
+        if (description.length)
+          setValidation({ ...validation, description: false });
+        validated = false;
+      }
+      if (item === "clientName") {
+        if (!clientName.length)
+          setValidation({ ...validation, clientName: false });
+        validated = false;
+      }
+      if (item === "clientEmail") {
+        if (!clientEmail.length)
+          setValidation({ ...validation, clientEmail: false });
+        validated = false;
+      }
+      if (item === "senderAddress") {
+        if (!senderAddress.city.length) {
+          setValidation({ ...validation, senderAddressCity: false });
+          validated = false;
+        }
+        if (!senderAddress.postCode.length) {
+          setValidation({ ...validation, senderAddressPostCode: false });
+          validated = false;
+        }
+        if (!senderAddress.country.length) {
+          setValidation({ ...validation, senderAddressCountry: false });
+          validated = false;
+        }
+        if (!senderAddress.street.length) {
+          setValidation({ ...validation, senderAddressStreet: false });
+          validated = false;
+        }
+      }
+
+      if (item === "clientAddress") {
+        if (!clientAddress.city.length) {
+          setValidation({ ...validation, clientAddressCity: false });
+          validated = false;
+        }
+        if (!clientAddress.postCode.length) {
+          setValidation({ ...validation, clientAddressPostCode: false });
+          validated = false;
+        }
+        if (!clientAddress.country.length) {
+          setValidation({ ...validation, clientAddressCountry: false });
+          validated = false;
+        }
+        if (!clientAddress.street.length) {
+          setValidation({ ...validation, clientAddressStreet: false });
+          validated = false;
+        }
+      }
     }
 
-    setOpenSidebar(false);
+    if (validated) {
+      if (invoiceList.length) {
+        setinvoiceList([...invoiceList, newInvoice]);
+      } else {
+        setinvoiceList([newInvoice]);
+      }
+
+      setOpenSidebar(false);
+    }
   };
   return (
     <div className="sidebar">
@@ -133,11 +211,18 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
                   color: `${isDark ? "white" : "black"}`,
                   borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                 }}
+                className={`${
+                  !validation.senderAddressStreet ? "validation-red" : ""
+                }`}
                 type="text"
                 name={senderAddress.street}
-                onChange={(e) =>
-                  setSenderAddress({ ...senderAddress, street: e.target.value })
-                }
+                onChange={(e) => {
+                  setSenderAddress({
+                    ...senderAddress,
+                    street: e.target.value,
+                  });
+                  setValidation({ ...validation, senderAddressStreet: true });
+                }}
                 id=""
               />
             </div>
@@ -160,10 +245,17 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
                     borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                   }}
                   type="text"
+                  className={`${
+                    !validation.senderAddressCity ? "validation-red" : ""
+                  }`}
                   name={senderAddress.city}
-                  onChange={(e) =>
-                    setSenderAddress({ ...senderAddress, city: e.target.value })
-                  }
+                  onChange={(e) => {
+                    setSenderAddress({
+                      ...senderAddress,
+                      city: e.target.value,
+                    });
+                    setValidation({ ...validation, senderAddressCity: true });
+                  }}
                   id=""
                 />
               </div>
@@ -185,13 +277,20 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
                     borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                   }}
                   type="text"
+                  className={`${
+                    !validation.senderAddressPostCode ? "validation-red" : ""
+                  }`}
                   name={senderAddress.postCode}
-                  onChange={(e) =>
+                  onChange={(e) => {
                     setSenderAddress({
                       ...senderAddress,
                       postCode: e.target.value,
-                    })
-                  }
+                    });
+                    setValidation({
+                      ...validation,
+                      senderAddressPostCode: true,
+                    });
+                  }}
                   id=""
                 />
               </div>
@@ -214,12 +313,19 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
                   }}
                   type="text"
                   name={senderAddress.country}
-                  onChange={(e) =>
+                  className={`${
+                    !validation.senderAddressCountry ? "validation-red" : ""
+                  }`}
+                  onChange={(e) => {
                     setSenderAddress({
                       ...senderAddress,
                       country: e.target.value,
-                    })
-                  }
+                    });
+                    setValidation({
+                      ...validation,
+                      senderAddressCountry: true,
+                    });
+                  }}
                   id=""
                 />
               </div>
@@ -247,8 +353,12 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
                   borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                 }}
                 type="text"
+                className={`${!validation.clientName ? "validation-red" : ""}`}
                 name={clientName}
-                onChange={(e) => setClientName(e.target.value)}
+                onChange={(e) => {
+                  setClientName(e.target.value);
+                  setValidation({ ...validation, clientName: true });
+                }}
                 id=""
               />
             </div>
@@ -271,7 +381,11 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
                 }}
                 type="email"
                 name={clientEmail}
-                onChange={(e) => setClientEmail(e.target.value)}
+                className={`${!validation.clientEmail ? "validation-red" : ""}`}
+                onChange={(e) => {
+                  setClientEmail(e.target.value);
+                  setValidation({ ...validation, clientEmail: true });
+                }}
                 id=""
               />
             </div>
@@ -294,9 +408,16 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
                 }}
                 type="text"
                 name={clientAddress.street}
-                onChange={(e) =>
-                  setClientAddress({ ...clientAddress, street: e.target.value })
-                }
+                className={`${
+                  !validation.clientAddressStreet ? "validation-red" : ""
+                }`}
+                onChange={(e) => {
+                  setClientAddress({
+                    ...clientAddress,
+                    street: e.target.value,
+                  });
+                  setValidation({ ...validation, clientAddressStreet: true });
+                }}
                 id=""
               />
             </div>
@@ -320,9 +441,16 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
                   }}
                   type="text"
                   name={clientAddress.city}
-                  onChange={(e) =>
-                    setClientAddress({ ...clientAddress, city: e.target.value })
-                  }
+                  className={`${
+                    !validation.clientAddressCity ? "validation-red" : ""
+                  }`}
+                  onChange={(e) => {
+                    setClientAddress({
+                      ...clientAddress,
+                      city: e.target.value,
+                    });
+                    setValidation({ ...validation, clientAddressCity: true });
+                  }}
                   id=""
                 />
               </div>
@@ -345,12 +473,19 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
                   }}
                   type="text"
                   name={clientAddress.postCode}
-                  onChange={(e) =>
+                  className={`${
+                    !validation.clientAddressPostCode ? "validation-red" : ""
+                  }`}
+                  onChange={(e) => {
                     setClientAddress({
                       ...clientAddress,
                       postCode: e.target.value,
-                    })
-                  }
+                    });
+                    setValidation({
+                      ...validation,
+                      clientAddressPostCode: true,
+                    });
+                  }}
                   id=""
                 />
               </div>
@@ -373,12 +508,20 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
                   }}
                   type="text"
                   name={clientAddress.country}
-                  onChange={(e) =>
+                  className={`${
+                    !validation.clientAddressCountry ? "validation-red" : ""
+                  }`}
+                  onChange={(e) => {
                     setClientAddress({
                       ...clientAddress,
                       country: e.target.value,
-                    })
-                  }
+                    });
+
+                    setValidation({
+                      ...validation,
+                      clientAddressCountry: true,
+                    });
+                  }}
                   id=""
                 />
               </div>
@@ -403,7 +546,11 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
                   }}
                   type="date"
                   name={createdAt}
-                  onChange={(e) => setCreatedAt(e.target.value)}
+                  className={`${!validation.createdAt ? "validation-red" : ""}`}
+                  onChange={(e) => {
+                    setCreatedAt(e.target.value);
+                    setValidation({ ...validation, createdAt: true });
+                  }}
                   id=""
                 />
               </div>
@@ -452,9 +599,13 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
                   color: `${isDark ? "white" : "black"}`,
                   borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                 }}
+                className={`${!validation.description ? "validation-red" : ""}`}
                 type="text"
                 name={description}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={(e) => {
+                  setDescription(e.target.value);
+                  setValidation({ ...validation, description: true });
+                }}
                 id=""
               />
             </div>
@@ -514,7 +665,9 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
                   <div className="form-input ">
                     <input
                       style={{
-                        backgroundColor: `${isDark ? "#252945" : "white"}`,
+                        backgroundColor: `${
+                          isDark ? "#252945" : "rgb(233, 233, 233)"
+                        }`,
                         color: `${isDark ? "white" : "black"}`,
                         borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                       }}
@@ -530,7 +683,9 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
                   <div className="form-input ">
                     <input
                       style={{
-                        backgroundColor: `${isDark ? "#252945" : "white"}`,
+                        backgroundColor: `${
+                          isDark ? "#252945" : "rgb(233, 233, 233)"
+                        }`,
                         color: `${isDark ? "white" : "black"}`,
                         borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                       }}
@@ -546,7 +701,9 @@ const NewInvoice = ({ openSidebar, setOpenSidebar }) => {
                   <div className="form-input ">
                     <input
                       style={{
-                        backgroundColor: `${isDark ? "#252945" : "white"}`,
+                        backgroundColor: `${
+                          isDark ? "#252945" : "rgb(233, 233, 233)"
+                        }`,
                         color: `${isDark ? "white" : "black"}`,
                         borderColor: `${isDark ? "#252945" : "#DFE3FA"}`,
                       }}

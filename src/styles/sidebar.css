@@ -149,6 +149,9 @@ select:focus,option:focus{
     padding: 10px;
     cursor: pointer;
 }
+.validation-red {
+    border-color: red !important;
+}
 .form-item-button{
     border: none;
     padding: 0.7rem;

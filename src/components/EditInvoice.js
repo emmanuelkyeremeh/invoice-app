@@ -52,12 +52,29 @@ const EditInvoice = ({ open, setOpen, id }) => {
     }
   };
 
+  const [validation, setValidation] = useState({
+    createdAt: true,
+    paymentDue: true,
+    description: true,
+    clientName: true,
+    clientEmail: true,
+    senderAddressStreet: true,
+    senderAddressCity: true,
+    senderAddressPostCode: true,
+    senderAddressCountry: true,
+    clientAddressStreet: true,
+    clientAddressCity: true,
+    clientAddressPostCode: true,
+    clientAddressCountry: true,
+  });
+
   const handleItemDelete = (index) => {
     setItems(items.filter((item, indx) => indx !== index));
   };
 
   const saveAndSubmitHandler = (e) => {
     e.preventDefault();
+    let validated = true;
 
     setInvoiceList(invoiceList.filter((invoice) => invoice.id !== id));
 
@@ -89,13 +106,76 @@ const EditInvoice = ({ open, setOpen, id }) => {
       items: submittedItems,
       total: total,
     };
-    if (invoiceList.length) {
-      setInvoiceList((prev) => [...prev, EditedInvoice]);
-    } else {
-      setInvoiceList([EditedInvoice]);
+
+    for (let item in EditedInvoice) {
+      if (item === "createdAt") {
+        if (createdAt.length)
+          setValidation({ ...validation, createdAt: false });
+        validated = false;
+      }
+      if (item === "description") {
+        if (description.length)
+          setValidation({ ...validation, description: false });
+        validated = false;
+      }
+      if (item === "clientName") {
+        if (!clientName.length)
+          setValidation({ ...validation, clientName: false });
+        validated = false;
+      }
+      if (item === "clientEmail") {
+        if (!clientEmail.length)
+          setValidation({ ...validation, clientEmail: false });
+        validated = false;
+      }
+      if (item === "senderAddress") {
+        if (!senderAddress.city.length) {
+          setValidation({ ...validation, senderAddressCity: false });
+          validated = false;
+        }
+        if (!senderAddress.postCode.length) {
+          setValidation({ ...validation, senderAddressPostCode: false });
+          validated = false;
+        }
+        if (!senderAddress.country.length) {
+          setValidation({ ...validation, senderAddressCountry: false });
+          validated = false;
+        }
+        if (!senderAddress.street.length) {
+          setValidation({ ...validation, senderAddressStreet: false });
+          validated = false;
+        }
+      }
+
+      if (item === "clientAddress") {
+        if (!clientAddress.city.length) {
+          setValidation({ ...validation, clientAddressCity: false });
+          validated = false;
+        }
+        if (!clientAddress.postCode.length) {
+          setValidation({ ...validation, clientAddressPostCode: false });
+          validated = false;
+        }
+        if (!clientAddress.country.length) {
+          setValidation({ ...validation, clientAddressCountry: false });
+          validated = false;
+        }
+        if (!clientAddress.street.length) {
+          setValidation({ ...validation, clientAddressStreet: false });
+          validated = false;
+        }
+      }
     }
 
-    setOpen(false);
+    if (validated) {
+      if (invoiceList.length) {
+        setInvoiceList((prev) => [...prev, EditedInvoice]);
+      } else {
+        setInvoiceList([EditedInvoice]);
+      }
+
+      setOpen(false);
+    }
   };
 
   return (
@@ -139,10 +219,17 @@ const EditInvoice = ({ open, setOpen, id }) => {
                 }}
                 type="text"
                 name={senderAddress.street}
+                className={`${
+                  !validation.senderAddressStreet ? "validation-red" : ""
+                }`}
                 placeholder={senderAddress.street}
-                onChange={(e) =>
-                  setSenderAddress({ ...senderAddress, street: e.target.value })
-                }
+                onChange={(e) => {
+                  setSenderAddress({
+                    ...senderAddress,
+                    street: e.target.value,
+                  });
+                  setValidation({ ...validation, senderAddressStreet: true });
+                }}
                 id=""
               />
             </div>
@@ -166,10 +253,17 @@ const EditInvoice = ({ open, setOpen, id }) => {
                   }}
                   type="text"
                   name={senderAddress.city}
+                  className={`${
+                    !validation.senderAddressCity ? "validation-red" : ""
+                  }`}
                   placeholder={senderAddress.city}
-                  onChange={(e) =>
-                    setSenderAddress({ ...senderAddress, city: e.target.value })
-                  }
+                  onChange={(e) => {
+                    setSenderAddress({
+                      ...senderAddress,
+                      city: e.target.value,
+                    });
+                    setValidation({ ...validation, senderAddressCity: true });
+                  }}
                   id=""
                 />
               </div>
@@ -193,12 +287,19 @@ const EditInvoice = ({ open, setOpen, id }) => {
                   type="text"
                   name={senderAddress.postCode}
                   placeholder={senderAddress.postCode}
-                  onChange={(e) =>
+                  className={`${
+                    !validation.senderAddressPostCode ? "validation-red" : ""
+                  }`}
+                  onChange={(e) => {
                     setSenderAddress({
                       ...senderAddress,
                       postCode: e.target.value,
-                    })
-                  }
+                    });
+                    setValidation({
+                      ...validation,
+                      senderAddressPostCode: true,
+                    });
+                  }}
                   id=""
                 />
               </div>
@@ -222,12 +323,19 @@ const EditInvoice = ({ open, setOpen, id }) => {
                   type="text"
                   name={senderAddress.country}
                   placeholder={senderAddress.country}
-                  onChange={(e) =>
+                  className={`${
+                    !validation.senderAddressCountry ? "validation-red" : ""
+                  }`}
+                  onChange={(e) => {
                     setSenderAddress({
                       ...senderAddress,
                       country: e.target.value,
-                    })
-                  }
+                    });
+                    setValidation({
+                      ...validation,
+                      senderAddressCountry: true,
+                    });
+                  }}
                   id=""
                 />
               </div>
@@ -256,8 +364,12 @@ const EditInvoice = ({ open, setOpen, id }) => {
                 }}
                 type="text"
                 name={clientName}
+                className={`${!validation.clientName ? "validation-red" : ""}`}
                 placeholder={clientName}
-                onChange={(e) => setClientName(e.target.value)}
+                onChange={(e) => {
+                  setClientName(e.target.value);
+                  setValidation({ ...validation, clientName: true });
+                }}
                 id=""
               />
             </div>
@@ -281,7 +393,11 @@ const EditInvoice = ({ open, setOpen, id }) => {
                 type="email"
                 name={clientEmail}
                 placeholder={clientEmail}
-                onChange={(e) => setClientEmail(e.target.value)}
+                className={`${!validation.clientEmail ? "validation-red" : ""}`}
+                onChange={(e) => {
+                  setClientEmail(e.target.value);
+                  setValidation({ ...validation, clientEmail: true });
+                }}
                 id=""
               />
             </div>
@@ -304,10 +420,17 @@ const EditInvoice = ({ open, setOpen, id }) => {
                 }}
                 type="text"
                 name={clientAddress.street}
+                className={`${
+                  !validation.clientAddressStreet ? "validation-red" : ""
+                }`}
                 placeholder={clientAddress.street}
-                onChange={(e) =>
-                  setClientAddress({ ...clientAddress, street: e.target.value })
-                }
+                onChange={(e) => {
+                  setClientAddress({
+                    ...clientAddress,
+                    street: e.target.value,
+                  });
+                  setValidation({ ...validation, clientAddressStreet: true });
+                }}
                 id=""
               />
             </div>
@@ -331,10 +454,17 @@ const EditInvoice = ({ open, setOpen, id }) => {
                   }}
                   type="text"
                   name={clientAddress.city}
+                  className={`${
+                    !validation.clientAddressCity ? "validation-red" : ""
+                  }`}
                   placeholder={clientAddress.city}
-                  onChange={(e) =>
-                    setClientAddress({ ...clientAddress, city: e.target.value })
-                  }
+                  onChange={(e) => {
+                    setClientAddress({
+                      ...clientAddress,
+                      city: e.target.value,
+                    });
+                    setValidation({ ...validation, clientAddressCity: true });
+                  }}
                   id=""
                 />
               </div>
@@ -358,12 +488,19 @@ const EditInvoice = ({ open, setOpen, id }) => {
                   type="text"
                   name={clientAddress.postCode}
                   placeholder={clientAddress.postCode}
-                  onChange={(e) =>
+                  className={`${
+                    !validation.clientAddressPostCode ? "validation-red" : ""
+                  }`}
+                  onChange={(e) => {
                     setClientAddress({
                       ...clientAddress,
                       postCode: e.target.value,
-                    })
-                  }
+                    });
+                    setValidation({
+                      ...validation,
+                      clientAddressPostCode: true,
+                    });
+                  }}
                   id=""
                 />
               </div>
@@ -387,12 +524,20 @@ const EditInvoice = ({ open, setOpen, id }) => {
                   type="text"
                   name={clientAddress.country}
                   placeholder={clientAddress.country}
-                  onChange={(e) =>
+                  className={`${
+                    !validation.clientAddressCountry ? "validation-red" : ""
+                  }`}
+                  onChange={(e) => {
                     setClientAddress({
                       ...clientAddress,
                       country: e.target.value,
-                    })
-                  }
+                    });
+
+                    setValidation({
+                      ...validation,
+                      clientAddressCountry: true,
+                    });
+                  }}
                   id=""
                 />
               </div>
@@ -417,8 +562,12 @@ const EditInvoice = ({ open, setOpen, id }) => {
                   }}
                   type="date"
                   name={createdAt}
+                  className={`${!validation.createdAt ? "validation-red" : ""}`}
                   placeholder={createdAt}
-                  onChange={(e) => setCreatedAt(e.target.value)}
+                  onChange={(e) => {
+                    setCreatedAt(e.target.value);
+                    setValidation({ ...validation, createdAt: true });
+                  }}
                   id=""
                 />
               </div>
@@ -470,8 +619,12 @@ const EditInvoice = ({ open, setOpen, id }) => {
                 }}
                 type="text"
                 name={description}
+                className={`${!validation.description ? "validation-red" : ""}`}
                 placeholder={description}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={(e) => {
+                  setDescription(e.target.value);
+                  setValidation({ ...validation, description: true });
+                }}
                 id=""
               />
             </div>

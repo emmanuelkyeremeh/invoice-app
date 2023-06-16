@@ -112,7 +112,11 @@ const SingleInvoice = () => {
             </button>
             <button
               onClick={() => markAsPaidHandler()}
-              className="single-invoice-container-button mark-as-paid"
+              className={`${
+                singleData.status !== "paid"
+                  ? "single-invoice-container-button mark-as-paid"
+                  : "mark-as-paid-do-not-show"
+              }`}
             >
               Mark as Paid
             </button>
@@ -184,7 +188,7 @@ const SingleInvoice = () => {
                   <tr>
                     <td>
                       {item.name}
-                      <span className="single-invoicedisplay-all-responsive">
+                      <span className="single-invoice-display-all-responsive">
                         <br />
                         {item.quantity}x{item.price}
                       </span>
