@@ -54,7 +54,7 @@ const App = () => {
           <div className="invoice-page-title">
             <h1>Invoices</h1>
             <h3 style={{ color: `${isDark ? "white" : "#888EB0"}` }}>
-              There are 7 total invoices
+              There are {data.length} total invoices
             </h3>
           </div>
           <div className="invoice-page-info">

@@ -52,7 +52,7 @@
     margin-left: 1rem;
     cursor: pointer;
 }
-.mark-as-paid-do-not-show{
+.do-not-show{
     display: none;
 }
 .single-invoice-container-body{

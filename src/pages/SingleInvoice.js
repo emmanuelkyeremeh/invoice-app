@@ -99,8 +99,12 @@ const SingleInvoice = () => {
           </div>
           <div className="single-invoice-container-tray-buttons buttons-display-none">
             <button
-              className="single-invoice-container-button edit"
               onClick={() => setOpen(true)}
+              className={`${
+                singleData.status !== "paid"
+                  ? "single-invoice-container-button edit"
+                  : "do-not-show"
+              }`}
             >
               Edit
             </button>
@@ -115,7 +119,7 @@ const SingleInvoice = () => {
               className={`${
                 singleData.status !== "paid"
                   ? "single-invoice-container-button mark-as-paid"
-                  : "mark-as-paid-do-not-show"
+                  : "do-not-show"
               }`}
             >
               Mark as Paid
